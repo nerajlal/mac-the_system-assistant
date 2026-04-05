@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac Assistant Dashboard</title>
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <div class="container">
+        <header class="glass-panel">
+            <div class="logo">
+                <div class="mic-icon waiting" id="mic-indicator"></div>
+                <h1>Mac <span class="accent">AI</span></h1>
+            </div>
+            <div class="status-badge" id="status-badge">Waiting</div>
+        </header>
+
+        <main class="glass-panel main-dashboard">
+            <div class="control-section">
+                <h2>Assistant Power</h2>
+                <p>Toggle Mac's listening capabilities across the entire system.</p>
+                <div class="toggle-container">
+                    <label class="switch">
+                        <input type="checkbox" id="power-toggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span id="power-label" class="power-label active">System Active</span>
+                </div>
+            </div>
+
+            <div class="logs-section">
+                <h2>Activity Log</h2>
+                <div class="log-stream" id="log-stream">
+                    <!-- Logs will be populated here -->
+                    <div class="log-entry system">
+                        <span class="time">Now</span> System initialized. Voice assistant is running in the background.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

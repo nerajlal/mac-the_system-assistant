@@ -45,11 +45,11 @@ Alexa/
 
 ### 1. Create a virtual environment
 ```bash
-cd /Users/mac/Projects/Alexa
+cd /Proj_folder_path
 python3 -m venv venv
 source venv/bin/activate
 ```
-
+ß
 ### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
