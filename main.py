@@ -39,7 +39,7 @@ import app as web_app
 
 def run_voice_mode(use_wake_word: bool = True):
     """Standard voice-activated loop with wake word."""
-    speak(f"Hello! I'm {Config.ASSISTANT_NAME}. Say 'Hey Mac' followed by your question.")
+    speak(f"Hello! I'm {Config.ASSISTANT_NAME}. Say 'Hey Alexa' followed by your question.")
 
     while True:
         # Check if the web toggle is active; if not, sleep briefly
@@ -63,7 +63,7 @@ def run_voice_mode(use_wake_word: bool = True):
                 text = listen()
 
                 if not text:
-                    speak("I didn't catch that. Say 'Hey Mac' and try again.")
+                    speak("I didn't catch that. Say 'Hey Alexa' and try again.")
                     continue
         else:
             # No wake word — always listening
@@ -77,7 +77,7 @@ def run_voice_mode(use_wake_word: bool = True):
         response = process(text)
 
         if response == "__EXIT__":
-            speak("Okay, going back to sleep. Say Hey Mac whenever you need me!")
+            speak("Okay, going back to sleep. Say Hey Alexa whenever you need me!")
         else:
             speak(response)
 

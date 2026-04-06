@@ -16,11 +16,11 @@ except ImportError:
 def _clean_query(text: str) -> str:
     """Strip common filler words to get the actual search topic."""
     fillers = [
-        r"^(mac\s+)?search\s+(for\s+)?",
-        r"^(mac\s+)?who is\s+",
-        r"^(mac\s+)?what is\s+",
-        r"^(mac\s+)?how to\s+",
-        r"^(mac\s+)?tell me about\s+",
+        r"^(alexa\s+)?search\s+(for\s+)?",
+        r"^(alexa\s+)?who is\s+",
+        r"^(alexa\s+)?what is\s+",
+        r"^(alexa\s+)?how to\s+",
+        r"^(alexa\s+)?tell me about\s+",
     ]
     text = text.strip()
     for filler in fillers:

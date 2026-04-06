@@ -33,7 +33,7 @@ def _get_first_video_url(query: str) -> str:
 def _extract_song(text: str) -> str:
     """Pull the song/artist name from the command."""
     cleaned = re.sub(
-        r"(hey\s+)?(mac\s+)?(play\s+)?(some\s+)?(song\s+|music\s+)?(by\s+)?(on\s+youtube\s*)?",
+        r"(hey\s+)?(alexa\s+)?(play\s+)?(some\s+)?(song\s+|music\s+)?(by\s+)?(on\s+youtube\s*)?",
         "",
         text,
         flags=re.IGNORECASE,

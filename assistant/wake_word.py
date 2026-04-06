@@ -1,5 +1,5 @@
 """
-Wake-word detector — listens in a tight loop until "hey mac" (or just "mac") is heard.
+Wake-word detector — listens in a tight loop until "hey alexa" (or just "alexa") is heard.
 If the user says the wake word + a command in one phrase, the command is extracted and returned.
 """
 
@@ -18,8 +18,8 @@ _CHANNELS = 1
 
 # Patterns that count as a wake word trigger
 _WAKE_PATTERNS = [
-    r"\bhey\s+(mac|mack|max|mark|mike|matt)\b",
-    r"\b(mac|mack|max|mark|mike)\b",
+    r"\bhey\s+(alexa|alixa|aliza|alex)\b",
+    r"\b(alexa|alixa|aliza|alex)\b",
 ]
 
 
@@ -44,20 +44,20 @@ def _to_audio_data(audio_np: np.ndarray) -> sr.AudioData:
 def _strip_wake_word(text: str) -> str:
     """Remove the wake word from the beginning of the text to get just the command."""
     cleaned = text.strip()
-    # Remove "hey mac" (or variations) from the start
-    cleaned = re.sub(r"^(hey\s+)?(mac|mack|max|mark|mike|matt)[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
+    # Remove "hey alexa" (or variations) from the start
+    cleaned = re.sub(r"^(hey\s+)?(alexa|alixa|aliza|alex)[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
     return cleaned
 
 
 def wait_for_wake_word() -> Optional[str]:
     """
-    Block until 'hey mac' or 'mac' is detected.
+    Block until 'hey alexa' or 'alexa' is detected.
 
     Returns:
-        - The remaining command text if the user said "Hey Mac <command>"
-        - None if the user only said "Hey Mac" (no command attached)
+        - The remaining command text if the user said "Hey Alexa <command>"
+        - None if the user only said "Hey Alexa" (no command attached)
     """
-    print(f"\n😴  Say 'Hey Mac' to wake me up...")
+    print(f"\n😴  Say 'Hey Alexa' to wake me up...")
     while True:
         try:
             audio_np = _record_short(duration=4.0)

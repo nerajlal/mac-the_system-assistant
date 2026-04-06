@@ -45,7 +45,7 @@ def _get_first_youtube_video(query: str) -> str:
 def play_youtube(text: str) -> str:
     """Search and auto-play something on YouTube."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"play\s+",
         r"(a\s+)?trailer\s+(of\s+|for\s+)?",
         r"on\s+youtube\s*",
@@ -65,7 +65,7 @@ def play_youtube(text: str) -> str:
 def play_trailer(text: str) -> str:
     """Search for a movie/show trailer and auto-play it on YouTube."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"play\s+",
         r"show\s+(me\s+)?(the\s+)?",
         r"open\s+",
@@ -85,7 +85,7 @@ def play_trailer(text: str) -> str:
 def play_spotify(text: str) -> str:
     """Open Spotify app and play. Falls back to YouTube if Spotify isn't installed."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"play\s+",
         r"on\s+spotify\s*",
         r"spotify\s+",
@@ -133,7 +133,7 @@ def play_spotify(text: str) -> str:
 def open_netflix(text: str) -> str:
     """Open Netflix and optionally search."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"open\s+",
         r"play\s+",
         r"on\s+netflix\s*",
@@ -158,7 +158,7 @@ def open_netflix(text: str) -> str:
 def google_search(text: str) -> str:
     """Open a Google search."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"google\s+",
         r"search\s+(for\s+|about\s+)?",
         r"look\s+up\s+",
@@ -176,7 +176,7 @@ def google_search(text: str) -> str:
 def open_maps(text: str) -> str:
     """Open Google Maps with directions or a place."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"(open\s+)?(google\s+)?maps?\s*",
         r"directions?\s+(to\s+)?",
         r"navigate\s+(to\s+)?",
@@ -230,7 +230,7 @@ _MAC_APPS = {
 def open_app(text: str) -> str:
     """Open a macOS application by name."""
     query = _clean(text, [
-        r"(hey\s+)?mac\s+",
+        r"(hey\s+)?alexa\s+",
         r"open\s+",
         r"launch\s+",
         r"start\s+",
