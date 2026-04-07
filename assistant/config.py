@@ -6,15 +6,15 @@ Edit these values to tune the assistant's behaviour.
 
 class Config:
     # ── Identity ─────────────────────────────────────────────────────────────
-    ASSISTANT_NAME: str = "Alexa"
-    WAKE_WORD: str = "alexa"           # Spoken trigger word
+    ASSISTANT_NAME: str = "Macoo"
+    WAKE_WORD: str = "macoo"           # Spoken trigger word
 
     # ── Speech Recognition ───────────────────────────────────────────────────
     LANGUAGE: str = "en-US"           # BCP-47 language tag for Google STT
     ENERGY_THRESHOLD: int = 300       # Microphone sensitivity (lower = more sensitive)
     PAUSE_THRESHOLD: float = 0.8      # Seconds of silence to mark end of phrase
-    LISTEN_TIMEOUT: int = 5           # Max seconds to wait for speech to begin
-    PHRASE_LIMIT: int = 10            # Max seconds for a single phrase
+    LISTEN_TIMEOUT: int = 3           # Max seconds to wait for speech to begin
+    PHRASE_LIMIT: int = 5             # Max seconds for a single phrase (reduced for lower latency)
 
     # ── Text-to-Speech ───────────────────────────────────────────────────────
     SPEECH_RATE: int = 170            # Words per minute

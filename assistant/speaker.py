@@ -13,13 +13,13 @@ _IS_MAC = platform.system() == "Darwin"
 
 def speak(text: str) -> None:
     """Speak the given text aloud and print it to console."""
-    print(f"🤖  Alexa: {text}")
+    print(f"🤖  Macoo: {text}")
 
     if _IS_MAC:
         # macOS 'say' command — always produces clear audio
         try:
             subprocess.run(
-                ["say", "-v", "Samantha", "-r", "180", text],
+                ["say", "-v", "Daniel", "-r", "180", text],
                 check=True,
                 timeout=30,
             )
@@ -34,10 +34,10 @@ def speak(text: str) -> None:
         engine.setProperty("rate", 170)
         engine.setProperty("volume", 1.0)
 
-        # Pick Samantha voice on Mac
+        # Pick Daniel voice on Mac
         voices = engine.getProperty("voices")
         for v in voices:
-            if "samantha" in v.name.lower():
+            if "daniel" in v.name.lower():
                 engine.setProperty("voice", v.id)
                 break
 

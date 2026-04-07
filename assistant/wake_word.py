@@ -1,5 +1,5 @@
 """
-Wake-word detector — listens in a tight loop until "hey alexa" (or just "alexa") is heard.
+Wake-word detector — listens in a tight loop until "hey macoo" (or just "macoo") is heard.
 If the user says the wake word + a command in one phrase, the command is extracted and returned.
 """
 
@@ -18,12 +18,13 @@ _CHANNELS = 1
 
 # Patterns that count as a wake word trigger
 _WAKE_PATTERNS = [
-    r"\bhey\s+(alexa|alixa|aliza|alex)\b",
-    r"\b(alexa|alixa|aliza|alex)\b",
+    r"(?i)\bhey\s+(macoo|maco|makoo|maku|macu|mako|mccool|mcgoo|mac\soo|marco|magoo|mac|mack|max)\b",
+    r"(?i)\b(macoo|maco|makoo|maku|macu|mako|mccool|mcgoo|mac\soo|marco|magoo|mac|mack|max)\b",
+    r"(?i)\bhema\s+ko\b",
 ]
 
 
-def _record_short(duration: float = 4.0) -> np.ndarray:
+def _record_short(duration: float = 2.5) -> np.ndarray:
     audio = sd.rec(
         int(duration * _SAMPLE_RATE),
         samplerate=_SAMPLE_RATE,
@@ -44,26 +45,28 @@ def _to_audio_data(audio_np: np.ndarray) -> sr.AudioData:
 def _strip_wake_word(text: str) -> str:
     """Remove the wake word from the beginning of the text to get just the command."""
     cleaned = text.strip()
-    # Remove "hey alexa" (or variations) from the start
-    cleaned = re.sub(r"^(hey\s+)?(alexa|alixa|aliza|alex)[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
+    # Remove "hey macoo" (or variations) from the start
+    cleaned = re.sub(r"^(hey\s+)?(macoo|maco|makoo|maku|macu|mako|mccool|mcgoo|mac\soo|marco|magoo|mac|mack|max)[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
+    cleaned = re.sub(r"^hema\s+ko[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
     return cleaned
 
 
 def wait_for_wake_word() -> Optional[str]:
     """
-    Block until 'hey alexa' or 'alexa' is detected.
+    Block until 'hey macoo' or 'macoo' is detected.
 
     Returns:
-        - The remaining command text if the user said "Hey Alexa <command>"
-        - None if the user only said "Hey Alexa" (no command attached)
+        - The remaining command text if the user said "Hey Macoo <command>"
+        - None if the user only said "Hey Macoo" (no command attached)
     """
-    print(f"\n😴  Say 'Hey Alexa' to wake me up...")
+    print(f"\n😴  Say 'Hey Macoo' to wake me up...")
     while True:
         try:
-            audio_np = _record_short(duration=4.0)
+            audio_np = _record_short(duration=2.5)
             audio_data = _to_audio_data(audio_np)
             text = _recognizer.recognize_google(audio_data, language=Config.LANGUAGE)
             text_lower = text.lower()
+            print(f"🎤 [DEBUG] I heard: '{text_lower}'")
 
             # Check if any wake pattern matches
             for pattern in _WAKE_PATTERNS:

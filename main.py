@@ -3,13 +3,13 @@
 main.py — Entry point for the Python Voice Assistant.
 
 Flow:
-  1. Say "Hey Alexa" (or "Alexa") to wake it up
+  1. Say "Hey Macoo" (or "Macoo") to wake it up
   2. Ask your question — either in the same phrase or after it responds "Yes?"
   3. Get a spoken answer
-  4. It goes back to sleep, waiting for "Hey Alexa" again
+  4. It goes back to sleep, waiting for "Hey Macoo" again
 
 Run with:
-    python main.py              # Normal mode — "Hey Alexa" wake word
+    python main.py              # Normal mode — "Hey Macoo" wake word
     python main.py --no-wake    # Always-listening (no wake word needed)
     python main.py --text       # Text-only mode (no microphone)
 """
@@ -39,7 +39,7 @@ import app as web_app
 
 def run_voice_mode(use_wake_word: bool = True):
     """Standard voice-activated loop with wake word."""
-    speak(f"Hello! I'm {Config.ASSISTANT_NAME}. Say 'Hey Alexa' followed by your question.")
+    speak(f"Hello! I'm {Config.ASSISTANT_NAME}. Say 'Hey Macoo' followed by your question.")
 
     while True:
         # Check if the web toggle is active; if not, sleep briefly
@@ -50,20 +50,20 @@ def run_voice_mode(use_wake_word: bool = True):
         text = None
 
         if use_wake_word:
-            # ── Step 1: Wait for "Hey Alexa" ─────────────────────────────── #
+            # ── Step 1: Wait for "Hey Macoo" ─────────────────────────────── #
             from assistant.wake_word import wait_for_wake_word
             command = wait_for_wake_word()
 
             if command:
-                # User said "Hey Alexa, what time is it" — command already extracted
+                # User said "Hey Macoo, what time is it" — command already extracted
                 text = command
             else:
-                # User just said "Hey Alexa" — acknowledge and listen for question
+                # User just said "Hey Macoo" — acknowledge and listen for question
                 speak("Yes? What can I help you with?")
                 text = listen()
 
                 if not text:
-                    speak("I didn't catch that. Say 'Hey Alexa' and try again.")
+                    speak("I didn't catch that. Say 'Hey Macoo' and try again.")
                     continue
         else:
             # No wake word — always listening
@@ -77,7 +77,7 @@ def run_voice_mode(use_wake_word: bool = True):
         response = process(text)
 
         if response == "__EXIT__":
-            speak("Okay, going back to sleep. Say Hey Alexa whenever you need me!")
+            speak("Okay, going back to sleep. Say Hey Macoo whenever you need me!")
         else:
             speak(response)
 

@@ -3,50 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alexa Assistant Dashboard</title>
-    <!-- Google Fonts: Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Macoo Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <div class="background-effects">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-        <div class="glow-orb orb-3"></div>
-        <div class="noise-overlay"></div>
+<body class="system-active">
+    
+    <!-- Dynamic Fluid Background -->
+    <div class="ambient-background">
+        <div class="gradient-sphere sphere-1"></div>
+        <div class="gradient-sphere sphere-2"></div>
+        <div class="gradient-sphere sphere-3"></div>
+        <div class="gradient-sphere sphere-4"></div>
+        <div class="grain-overlay"></div>
     </div>
 
-    <div class="container">
-        <header class="glass-panel">
-            <div class="logo">
-                <div class="mic-icon waiting" id="mic-indicator"></div>
-                <h1>Alexa <span class="accent">AI</span></h1>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-header">
+            <div class="brand">
+                <div class="mic-container" id="mic-container">
+                    <div class="mic-waves"></div>
+                    <div class="mic-waves secondary"></div>
+                    <div class="mic-core waiting" id="mic-indicator"></div>
+                </div>
+                <h1>Macoo<span class="accent">AI</span></h1>
             </div>
-            <div class="status-badge" id="status-badge">Waiting</div>
+            
+            <div class="status-pill status-waiting" id="status-badge">
+                <span class="pulse-dot"></span>
+                <span class="status-text" id="status-text">Waiting</span>
+            </div>
         </header>
 
-        <main class="glass-panel main-dashboard">
-            <div class="control-section">
-                <h2>Assistant Power</h2>
-                <p>Toggle Alexa's listening capabilities across the entire system.</p>
-                <div class="toggle-container">
-                    <label class="switch">
-                        <input type="checkbox" id="power-toggle" checked>
-                        <span class="slider round"></span>
-                    </label>
-                    <span id="power-label" class="power-label active">System Active</span>
+        <!-- Main Dashboard -->
+        <main class="dashboard-grid">
+            
+            <!-- Power Control Card -->
+            <section class="glass-card settings-card group-hover-effect">
+                <div class="card-glow"></div>
+                <div class="card-header">
+                    <h2>System Power</h2>
+                    <p>Toggle Macoo's listening and processing capabilities.</p>
                 </div>
-            </div>
-
-            <div class="logs-section">
-                <h2>Activity Log</h2>
-                <div class="log-stream" id="log-stream">
-                    <!-- Logs will be populated here -->
-                    <div class="log-entry system">
-                        <span class="time">Now</span> System initialized. Voice assistant is running in the background.
+                
+                <div class="toggle-wrapper">
+                    <label class="premium-switch">
+                        <input type="checkbox" id="power-toggle" checked>
+                        <span class="slider">
+                            <span class="slider-thumb"></span>
+                        </span>
+                    </label>
+                    <div class="state-label">
+                        <span id="power-label" class="power-text active">System Active</span>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- Logs Terminal Card -->
+            <section class="glass-card logs-card group-hover-effect">
+                <div class="card-glow"></div>
+                <div class="card-header logs-header">
+                    <div>
+                        <h2>Activity Stream</h2>
+                        <p>Live terminal feedback</p>
+                    </div>
+                    <div class="live-indicator">
+                        <span class="live-dot"></span> Live
+                    </div>
+                </div>
+                
+                <div class="terminal-container">
+                    <div class="terminal-scroller" id="log-stream">
+                        <div class="log-entry system">
+                            <span class="time">[SYS]</span> <span class="msg">Kernel initialized. Awaiting commands.</span>
+                        </div>
+                    </div>
+                    <div class="terminal-gradient"></div>
+                </div>
+            </section>
+            
         </main>
     </div>
 

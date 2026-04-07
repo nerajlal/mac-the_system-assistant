@@ -16,7 +16,6 @@ _LOCAL_JOKES = [
     ("I'm reading a book on anti-gravity.", "It's impossible to put down."),
 ]
 
-
 def tell_joke() -> str:
     try:
         resp = requests.get(

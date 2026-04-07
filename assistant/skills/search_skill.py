@@ -12,15 +12,14 @@ try:
 except ImportError:
     _WIKI_AVAILABLE = False
 
-
 def _clean_query(text: str) -> str:
     """Strip common filler words to get the actual search topic."""
     fillers = [
-        r"^(alexa\s+)?search\s+(for\s+)?",
-        r"^(alexa\s+)?who is\s+",
-        r"^(alexa\s+)?what is\s+",
-        r"^(alexa\s+)?how to\s+",
-        r"^(alexa\s+)?tell me about\s+",
+        r"^((macoo|mac)\s+)?search\s+(for\s+)?",
+        r"^((macoo|mac)\s+)?who is\s+",
+        r"^((macoo|mac)\s+)?what is\s+",
+        r"^((macoo|mac)\s+)?how to\s+",
+        r"^((macoo|mac)\s+)?tell me about\s+",
     ]
     text = text.strip()
     for filler in fillers:
