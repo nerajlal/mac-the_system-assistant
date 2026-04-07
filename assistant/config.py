@@ -6,8 +6,8 @@ Edit these values to tune the assistant's behaviour.
 
 class Config:
     # ── Identity ─────────────────────────────────────────────────────────────
-    ASSISTANT_NAME: str = "Macoo"
-    WAKE_WORD: str = "macoo"           # Spoken trigger word
+    ASSISTANT_NAME: str = "Mac"
+    WAKE_WORD: str = "mac"             # Spoken trigger word
 
     # ── Speech Recognition ───────────────────────────────────────────────────
     LANGUAGE: str = "en-US"           # BCP-47 language tag for Google STT

@@ -13,7 +13,7 @@ _IS_MAC = platform.system() == "Darwin"
 
 def speak(text: str) -> None:
     """Speak the given text aloud and print it to console."""
-    print(f"🤖  Macoo: {text}")
+    print(f"🤖  Mac: {text}")
 
     if _IS_MAC:
         # macOS 'say' command — always produces clear audio

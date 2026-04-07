@@ -1,10 +1,11 @@
 """
-Wake-word detector — listens in a tight loop until "hey macoo" (or just "macoo") is heard.
+Wake-word detector — listens in a tight loop until "hey mac" (or just "mac") is heard.
 If the user says the wake word + a command in one phrase, the command is extracted and returned.
 """
 
 import io
 import re
+import time
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
@@ -18,9 +19,8 @@ _CHANNELS = 1
 
 # Patterns that count as a wake word trigger
 _WAKE_PATTERNS = [
-    r"(?i)\bhey\s+(macoo|maco|makoo|maku|macu|mako|mccool|mcgoo|mac\soo|marco|magoo|mac|mack|max)\b",
-    r"(?i)\b(macoo|maco|makoo|maku|macu|mako|mccool|mcgoo|mac\soo|marco|magoo|mac|mack|max)\b",
-    r"(?i)\bhema\s+ko\b",
+    r"(?i)\bhey\s+mac\b",
+    r"(?i)\bmac\b",
 ]
 
 
@@ -45,23 +45,27 @@ def _to_audio_data(audio_np: np.ndarray) -> sr.AudioData:
 def _strip_wake_word(text: str) -> str:
     """Remove the wake word from the beginning of the text to get just the command."""
     cleaned = text.strip()
-    # Remove "hey macoo" (or variations) from the start
-    cleaned = re.sub(r"^(hey\s+)?(macoo|maco|makoo|maku|macu|mako|mccool|mcgoo|mac\soo|marco|magoo|mac|mack|max)[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
-    cleaned = re.sub(r"^hema\s+ko[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
+    cleaned = re.sub(r"^(hey\s+)?mac[,]?\s*", "", cleaned, flags=re.IGNORECASE).strip()
     return cleaned
 
 
 def wait_for_wake_word() -> Optional[str]:
     """
-    Block until 'hey macoo' or 'macoo' is detected.
+    Block until 'hey mac' or 'mac' is detected.
 
     Returns:
-        - The remaining command text if the user said "Hey Macoo <command>"
-        - None if the user only said "Hey Macoo" (no command attached)
+        - The remaining command text if the user said "Hey Mac <command>"
+        - None if the user only said "Hey Mac" (no command attached)
     """
-    print(f"\n😴  Say 'Hey Macoo' to wake me up...")
+    print(f"\n😴  Say 'Hey Mac' to wake me up...")
     while True:
         try:
+            # Check if the web dashboard toggled us off
+            import app as web_app
+            if not web_app.assistant_state["is_active"]:
+                time.sleep(0.5)
+                continue
+
             audio_np = _record_short(duration=2.5)
             audio_data = _to_audio_data(audio_np)
             text = _recognizer.recognize_google(audio_data, language=Config.LANGUAGE)
@@ -79,7 +83,6 @@ def wait_for_wake_word() -> Optional[str]:
                     else:
                         return None
         except (sr.UnknownValueError, sr.RequestError):
-            # No speech detected or service error — just keep listening
             continue
         except Exception:
             continue
