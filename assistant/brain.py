@@ -12,6 +12,7 @@ from assistant.skills import (
     system_skill,
     music_skill,
     media_skill,
+    system_hooks,
 )
 
 
@@ -69,6 +70,20 @@ INTENTS = [
     {"skill": "music", "patterns": [
         r"\bplay\b",
     ]},
+
+    # System Hooks (macOS)
+    {"skill": "volume_up", "patterns": [r"\bvolume up\b", r"\blouder\b", r"\bincrease volume\b"]},
+    {"skill": "volume_down", "patterns": [r"\bvolume down\b", r"\bsofter\b", r"\bquieter\b", r"\bdecrease volume\b"]},
+    {"skill": "mute", "patterns": [r"\bmute\b"]},
+    {"skill": "set_volume", "patterns": [r"\bset volume to\b", r"\bvolume to\b", r"\bvolume\s+\d+"]},
+    
+    {"skill": "brightness_up", "patterns": [r"\bbrightness up\b", r"\bbrighter\b", r"\bincrease brightness\b"]},
+    {"skill": "brightness_down", "patterns": [r"\bbrightness down\b", r"\bdimmer\b", r"\bdecrease brightness\b"]},
+    {"skill": "set_brightness", "patterns": [r"\bset brightness to\b", r"\bbrightness to\b"]},
+    
+    {"skill": "dark_mode", "patterns": [r"\bdark mode\b", r"\blight mode\b", r"\btoggle dark mode\b"]},
+    {"skill": "battery", "patterns": [r"\bbattery\b", r"\bhow much battery\b", r"\bpower left\b"]},
+    {"skill": "settings", "patterns": [r"\bopen settings\b", r"\bopen display settings\b", r"\bopen sound settings\b", r"\bopen wifi\b"]},
 
     # System actions
     {"skill": "shutdown", "patterns": [r"\bshutdown\b", r"\bpoweroff\b", r"\bturn off\b"]},
@@ -141,6 +156,36 @@ def process(text: str) -> str:
         return weather_skill.get_weather(text)
 
     # ── System ────────────────────────────────────────────────────────────── #
+    elif skill == "volume_up":
+        return system_hooks.volume_up()
+
+    elif skill == "volume_down":
+        return system_hooks.volume_down()
+
+    elif skill == "mute":
+        return system_hooks.mute_volume()
+
+    elif skill == "set_volume":
+        return system_hooks.set_volume(text)
+
+    elif skill == "brightness_up":
+        return system_hooks.brightness_up()
+
+    elif skill == "brightness_down":
+        return system_hooks.brightness_down()
+
+    elif skill == "set_brightness":
+        return system_hooks.set_brightness(text)
+
+    elif skill == "dark_mode":
+        return system_hooks.toggle_dark_mode()
+
+    elif skill == "battery":
+        return system_hooks.get_battery()
+
+    elif skill == "settings":
+        return system_hooks.open_settings_pane(text)
+
     elif skill == "shutdown":
         return system_skill.shutdown()
 
