@@ -76,10 +76,20 @@ graph TD
 | **UI Experience** | **Glassmorphic Dashboard** (Web UI) | Floating Bubble (No Dashboard) |
 | **Interactivity** | **Snooze Engine** (Dedicated mute timer) | None |
 | **Local Speed** | **Zero-Latency Regex** for common tasks | Cloud round-trip required |
+| **Screen Awareness** | **Vision-Ready** (OCR Screen reading) | **Blind** (Cannot see screen context) |
+| **Terminal Integration** | **Full Shell Control** (Git, NPM, Shell) | **None** (No CLI or system-level access) |
+| **Persistence** | **SQLite Local Memory** (context aware) | **Episodic** (Forgets between sessions) |
+
+### 💡 The Power User Advantage
+
+*   **Cognitive Depth**: While Siri handles basic "set a timer" tasks, Macoo is a coding companion. He can debug Python scripts, explain complex terminal errors, and write boilerplate code using the **Gemini 1.5 Flash** engine.
+*   **Operational Transparency**: No more guessing why your assistant failed. The **Live Activity Stream** on the dashboard provides a real-time developer console for every voice interaction.
+*   **Extreme Latency Control**: By using a **Regex-First** approach, Macoo handles native system commands (Volume, Brightness, Apps) locally. This makes the response feel instantaneous, skipping the cloud round-trips that often slow down Siri.
+*   **Open Extensibility**: Macoo is built for builders. You can add a new native "Skill" in Python in under 5 minutes, whereas Siri remains a closed, proprietary box.
 
 ---
 
-## 🚀 The 20-Day Build Roadmap
+## 🚀 The 22-Day Build Roadmap
 
 We are following a strict trajectory to move from MVP to "Daily Driver" status.
 
@@ -90,12 +100,14 @@ We are following a strict trajectory to move from MVP to "Daily Driver" status.
 - [x] Hybrid LLM + Search Fallback integration.
 - [ ] Scene Parser & Coding Macros.
 
-### **Phase 2: Deep macOS Integration (Days 6–10) — ⚪ NOT STARTED**
+### **Phase 2: Deep macOS Integration (Days 6–12) — ⚪ NOT STARTED**
 - [ ] **Day 6:** SQLite Persistent Memory (Long-term Context).
 - [ ] **Day 7:** Proactive Task Management & Reminders.
 - [ ] **Day 8:** Media Master & Auto-Ducking (Spotify/Music control).
 - [ ] **Day 9:** Dynamic Window Management.
 - [ ] **Day 10:** Background Health Monitoring (Battery/CPU alerts).
+- [ ] **Day 11:** Screen OCR (Vision) — Give Macoo "Eyes".
+- [ ] **Day 12:** Remote Control Tier — Telegram Bot Integration.
 
 *(See [ROADMAP.md](ROADMAP.md) for Phases 3 and 4)*
 

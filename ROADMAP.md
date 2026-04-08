@@ -1,4 +1,4 @@
-# 🚀 MACOO — The 20-Day Build Roadmap
+# 🚀 MACOO — The 22-Day Build Roadmap
 
 > **"From Hardcoded Hack to Full macOS AI Assistant"**
 > 
@@ -11,11 +11,11 @@
 | Phase | Days | Focus | Status |
 |---|---|---|---|
 | **Phase 1** | Days 1–5 | The Brain & Beautiful UI | ✅ Completed |
-| **Phase 2** | Days 6–10 | Deep macOS Integration | 🟡 In Progress |
-| **Phase 3** | Days 11–15 | Developer Superpowers | ⚪ Not Started |
-| **Phase 4** | Days 16–20 | Proactive AI & Polish | ⚪ Not Started |
+| **Phase 2** | Days 6–12 | Deep macOS Integration | 🟡 In Progress |
+| **Phase 3** | Days 13–17 | Developer Superpowers | ⚪ Not Started |
+| **Phase 4** | Days 18–22 | Proactive AI & Polish | ⚪ Not Started |
 
-**Overall Progress: `5/20 Days` Completed**
+**Overall Progress: `5/22 Days` Completed**
 
 ---
 
@@ -133,7 +133,7 @@ make working setup dynamic
 - [ ] **Proactive Push Alerts:** Send success/failure notifications and screenshots back to the iPhone -> Stay updated on your Mac's status while away.
 ---
 
-## 📅 Phase 3: Developer Superpowers (Days 11–15)
+## 📅 Phase 3: Developer Superpowers (Days 13–17)
 > **Goal:** Turning the assistant into a Full-Stack companion.
 
 ### Day 13: Terminal Integration — Shell Control
@@ -169,7 +169,7 @@ make working setup dynamic
 
 ---
 
-## 📅 Phase 4: Proactive AI & Polish (Days 16–20)
+## 📅 Phase 4: Proactive AI & Polish (Days 18–22)
 > **Goal:** From Side Project to Daily Driver — The final production polish.
 
 ### Day 18: Slack / Email Summarizer
