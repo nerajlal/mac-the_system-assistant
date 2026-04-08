@@ -125,38 +125,42 @@ make working setup dynamic
 - [ ] **Auto-Delete Security:** Remove the `/tmp` image payload instantly post-inference -> The system ensures no screen captures leak permanently to storage.
 - [ ] **Screen Assistance Flows:** Create prompts for debugging errors -> Ask "What is this error code?" and Macoo dictates a helpful debugging solution locally.
 
-### Day
-make thing control from mobile like telegram bot or somthing any ways
+### Day 12: Remote Control Tier — Telegram Bot Integration
+**Goal:** Control Macoo from your iPhone via a secure Telegram bot link.
+- [ ] **Bot Registration:** Initialize the Telegram API and secure a bot token -> Remote communication channel established.
+- [ ] **Secure Command Webhook:** Connect the Flask server to Telegram via webhook (ngrok/local-tunnel) -> Commands from iPhone reach the local brain instantly.
+- [ ] **Remote Command Mapping:** Route text-based Telegram inputs to `brain.py` intents -> "Mute Mac" or "Running script?" works from anywhere.
+- [ ] **Proactive Push Alerts:** Send success/failure notifications and screenshots back to the iPhone -> Stay updated on your Mac's status while away.
 ---
 
 ## 📅 Phase 3: Developer Superpowers (Days 11–15)
 > **Goal:** Turning the assistant into a Full-Stack companion.
 
-### Day 12: Terminal Integration — Shell Control
+### Day 13: Terminal Integration — Shell Control
 **Goal:** Execute shell commands hands-free safely without trashing the system.
 - [ ] **Subprocess Wrapper:** Process `subprocess.Popen` securely with timeout limits -> Shell scripts execute in the background gracefully without hanging.
 - [ ] **Strict Command Allowlist:** Lock string matching to safe commands only (e.g., `php`, `npm`) -> Catastrophic OS deletions physically become impossible.
 - [ ] **Verbal Safety Confirmations:** Pause and require an explicit vocal "Yes" beforehand -> Destructive sequences like migrations strongly require human authorization.
 
-### Day 13: Snippet Generator & Clipboard Manager
+### Day 14: Snippet Generator & Clipboard Manager
 **Goal:** Generate boilerplate code via voice and automatically paste it into your IDE.
 - [ ] **Raw Code Prompting:** Ask the LLM to forcefully skip Markdown formatting tags -> Outputs pure, clean syntactical code boilerplate exactly as requested.
 - [ ] **Clipboard Hook Routing:** Pipe the clean return string right into macOS `pbcopy` -> The codebase is forcefully pushed into your OS clipboard buffer.
 - [ ] **Auto-Paste Simulation:** Simulate a manual `CMD + V` keypress in the foreground app -> Saying "Write a User Migration" types the boilerplate directly into your IDE.
 
-### Day 14: Git Assistant
+### Day 15: Git Assistant
 **Goal:** A smart Git workflow driven by voice so you never have to think about commit messages again.
 - [ ] **Background Diff Reader:** Securely read the uncommitted tree using `git diff --cached` -> Macoo digests code modifications perfectly.
 - [ ] **Message Generation:** Pass the code diff neatly into the LLM for deep analysis -> Generates clear, conventional commit messages perfectly matching your style.
 - [ ] **Pipeline ExecutionSequence:** Request voice validation, execute `git commit`, and run `git push` -> Your entire git deployment workflow happens totally hands-free.
 
-### Day 15: API Documentation Search
+### Day 16: API Documentation Search
 **Goal:** Ask framework questions without breaking focus to open Safari and StackOverflow.
 - [ ] **RAG / Search Hook:** Integrate the Perplexity API or an HTML Scraper automation -> Macoo fetches live technical documentation right off the internet securely.
 - [ ] **Technical Summarization:** Feed external manuals to the LLM to map concepts practically -> Macoo finds precise API endpoints easily without launching Safari.
 - [ ] **Vocal Structuring Guidelines:** Prompt the LLM strictly for auditory spoken delivery -> Syntactical brackets are intelligently skipped so logical concepts are vocalized smoothly.
 
-### Day 16: Database Explorer
+### Day 17: Database Explorer
 **Goal:** Get insights directly from your DB tables via voice queries.
 - [ ] **DB Authentication:** Establish safe SQLAlchemy or raw connections to Postgres/MySQL -> Macoo links directly reliably into your local Laravel databases.
 - [ ] **Database Schema Awareness:** Push column blueprints cleanly to the LLM context -> The backend model successfully writes highly accurate relational SQL queries securely.
@@ -168,31 +172,31 @@ make thing control from mobile like telegram bot or somthing any ways
 ## 📅 Phase 4: Proactive AI & Polish (Days 16–20)
 > **Goal:** From Side Project to Daily Driver — The final production polish.
 
-### Day 17: Slack / Email Summarizer
+### Day 18: Slack / Email Summarizer
 **Goal:** Digest unread communications effortlessly before starting deep work.
 - [ ] **Communication Webhooks/OAuth:** Authenticate secure connections cleanly to Slack and Gmail -> A safe automated pipeline streams into your unread communications hubs.
 - [ ] **Digest Aggregation Algorithm:** Programmatically sort undelivered messages by sender/importance -> Large messy volumes of morning chatter get prioritized highly efficiently.
 - [ ] **Vocal Briefing Sequence:** Create the custom "Check Messages" intent voice action -> Macoo delivers a clear, concise audible morning briefing properly summarizing everything.
 
-### Day 18: Premium Custom Voice
+### Day 19: Premium Custom Voice
 **Goal:** Ditch the built-in macOS voice for an ultra-realistic, expressive AI personality.
 - [ ] **Ultra-Realistic Streaming Audio:** Establish ElevenLabs/OpenAI Audio fast WebSocket connections -> Premium audio files stream instantly without awkwardly waiting for bulk generations.
 - [ ] **Phrase Output Caching:** Hash common text replies and map them locally to audio files -> Drastically slashes response latency times and cleanly cuts monthly API costs down.
 - [ ] **Voice UI Selector:** Register an aesthetic Audio Dropdown strictly into the Flask dashboard -> You physically toggle away from basic macOS `say` right into premium engaging personalities.
 
-### Day 19: Proactive Outbound Actions
+### Day 20: Proactive Outbound Actions
 **Goal:** Macoo should reach out to *you* when needed, rather than only speaking when spoken to.
 - [ ] **Event Bus Initialization:** Refactor the core infinite loop slightly to poll for internal system hooks -> Magically enables system triggers completely independent of uttering the wake word.
 - [ ] **CLI Subprocess Listening:** Catch cleanly when async script/terminal commands trigger standard exit codes -> Macoo can proactively audibly interrupt when your database migrations formally finish.
 - [ ] **Autarkic Alert Generation:** Analyze calendar items safely to dynamically insert spoken prompt reminders -> The system autonomously notifies you aloud "You have Standup precisely in 2 mins."
 
-### Day 20: Security, Privacy & Latency Audit
+### Day 21: Security, Privacy & Latency Audit
 **Goal:** Fortify the codebase, secure keys, and make responses instant.
 - [ ] **Dotenv Security Lockdown:** Evict all hardcoded API connection keys permanently into an ignored `.env` file -> Ensures your GitHub repositories remain completely safely fully secured.
 - [ ] **Performance Tracing Audit:** Optimize standard execution paths and trim blocking Python text string calculations -> Phenomenally slashes average vocal response latency times significantly.
 - [ ] **Privacy Nuke Endpoint:** Connect standard UI buttons cleanly directly to backend SQLite drop table queries -> Assures the end user they can rapidly securely forget all their memory history in zero seconds.
 
-### Day 21: The Grand Finale
+### Day 22: The Grand Finale
 **Goal:** The final cinematic demonstration and repository launch.
 - [ ] **Cinematic Script Production:** Plan a cohesive "Day in the Life" cinematic sequence actively demonstrating absolutely every core node -> Visually proves the massive undeniable value comprehensively.
 - [ ] **Path Abstraction & Cleanup:** Remove strictly all physical local system user paths targeting generic `os.path` properties -> Safely makes the assistant codebase fully scalable easily onto absolutely any modern macOS device seamlessly.
