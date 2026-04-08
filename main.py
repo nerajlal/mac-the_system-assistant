@@ -74,7 +74,10 @@ def run_voice_mode(use_wake_word: bool = True):
 
         # ── Step 2: Process the command & respond ────────────────────────── #
         print(f"🧠  Processing: {text}")
+        web_app.assistant_state["last_heard"] = text # Sync to UI
+        
         response = process(text)
+        web_app.assistant_state["last_spoken"] = response # Sync to UI
 
         if response == "__EXIT__":
             speak("Okay, going back to sleep. Say Hey Mac whenever you need me!")

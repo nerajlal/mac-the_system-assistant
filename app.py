@@ -31,7 +31,17 @@ def toggle_status():
     data = request.json
     if "is_active" in data:
         assistant_state["is_active"] = data["is_active"]
+        # Clear logs on manual toggle to keep it fresh
+        assistant_state["last_heard"] = ""
+        assistant_state["last_spoken"] = ""
     return jsonify(assistant_state)
+
+@app.route("/api/snooze", methods=["POST"])
+def snooze_assistant():
+    # Deactivate assistant
+    assistant_state["is_active"] = False
+    assistant_state["last_heard"] = "SNOOZE_ENGAGED"
+    return jsonify({"status": "snoozed", "duration_minutes": 5})
 
 def run_server():
     # Run the web server quietly on port 5050

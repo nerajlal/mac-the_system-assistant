@@ -11,7 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const logStream = document.getElementById('log-stream');
     const body = document.body;
 
+    const snoozeBtn = document.getElementById('snooze-btn');
+    const snoozeText = document.getElementById('snooze-text');
+    let snoozeTimer = null;
     let isPolling = false;
+    let lastHeardProcessed = "";
+    let lastSpokenProcessed = "";
 
     // Helper: Add a log entry
     function addLog(message, type = 'system') {
@@ -62,27 +67,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Snooze Logic
+    snoozeBtn.addEventListener('click', async () => {
+        if (snoozeTimer) return; // Already snoozing
+
+        try {
+            const response = await fetch('/api/snooze', { method: 'POST' });
+            const data = await response.json();
+            
+            addLog("Snooze engaged. Silence for 5 minutes.", "system");
+            startSnoozeCountdown(data.duration_minutes * 60);
+        } catch (error) {
+            console.error("Snooze failed:", error);
+        }
+    });
+
+    function startSnoozeCountdown(seconds) {
+        snoozeBtn.classList.add('active');
+        let remaining = seconds;
+        
+        updateSnoozeUI(remaining);
+        
+        snoozeTimer = setInterval(() => {
+            remaining--;
+            if (remaining <= 0) {
+                clearInterval(snoozeTimer);
+                snoozeTimer = null;
+                snoozeBtn.classList.remove('active');
+                snoozeText.textContent = "Snooze";
+                addLog("Snooze expired. System returning to stand-by.", "system");
+            } else {
+                updateSnoozeUI(remaining);
+            }
+        }, 1000);
+    }
+
+    function updateSnoozeUI(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        snoozeText.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
     function updateUI(state) {
         if (state.is_active) {
             body.classList.remove('system-offline');
             body.classList.add('system-active');
-
+            powerToggle.checked = true;
             powerLabel.textContent = "System Active";
             powerLabel.className = "power-text active";
             
             micIndicator.className = "mic-core waiting";
             statusBadge.className = "status-pill status-waiting";
             statusText.textContent = "Standing By";
+            
+            if (snoozeTimer) {
+                clearInterval(snoozeTimer);
+                snoozeTimer = null;
+                snoozeBtn.classList.remove('active');
+                snoozeText.textContent = "Snooze";
+            }
         } else {
             body.classList.remove('system-active');
             body.classList.add('system-offline');
-
+            powerToggle.checked = false;
             powerLabel.textContent = "System Offline";
             powerLabel.className = "power-text inactive";
             
             micIndicator.className = "mic-core disabled";
             statusBadge.className = "status-pill status-offline";
-            statusText.textContent = "Offline";
+            statusText.textContent = state.last_heard === "SNOOZE_ENGAGED" ? "Snoozing" : "Offline";
         }
     }
 
@@ -94,9 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/status');
             const data = await response.json();
             
-            if (powerToggle.checked !== data.is_active) {
-                powerToggle.checked = data.is_active;
-                updateUI(data);
+            updateUI(data);
+            
+            // Activity Sync - Realtime Logs
+            if (data.last_heard && data.last_heard !== lastHeardProcessed && data.last_heard !== "SNOOZE_ENGAGED") {
+                addLog(data.last_heard, 'user');
+                lastHeardProcessed = data.last_heard;
+            }
+            if (data.last_spoken && data.last_spoken !== lastSpokenProcessed) {
+                addLog(data.last_spoken, 'assistant');
+                lastSpokenProcessed = data.last_spoken;
             }
             
             // Handle the API Badge state dynamically
@@ -117,9 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 apiText.style.color = 'rgb(255, 100, 100)';
                 apiText.textContent = 'API Offline (Regex)';
             }
-
-            // Pseudo-log for demo if something's happening in backend
-            // In a real app we'd fetch actual logs from a /api/logs endpoint.
             
         } catch (error) {
             console.error("Polling error:", error);
@@ -132,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/api/status')
         .then(res => res.json())
         .then(data => {
-            powerToggle.checked = data.is_active;
             updateUI(data);
             pollStatus();
         })

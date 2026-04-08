@@ -10,12 +10,12 @@
 
 | Phase | Days | Focus | Status |
 |---|---|---|---|
-| **Phase 1** | Days 1–5 | The Brain & Beautiful UI | 🟡 In Progress |
-| **Phase 2** | Days 6–10 | Deep macOS Integration | ⚪ Not Started |
+| **Phase 1** | Days 1–5 | The Brain & Beautiful UI | ✅ Completed |
+| **Phase 2** | Days 6–10 | Deep macOS Integration | 🟡 In Progress |
 | **Phase 3** | Days 11–15 | Developer Superpowers | ⚪ Not Started |
 | **Phase 4** | Days 16–20 | Proactive AI & Polish | ⚪ Not Started |
 
-**Overall Progress: `3/20 Days` Completed**
+**Overall Progress: `5/20 Days` Completed**
 
 ---
 
@@ -54,9 +54,9 @@ Macoo/
 
 ### Day 2: The Premium Dashboard — Live State & Feedback 
 **Goal:** Make it look high-end without over-engineering the backend logic.
-- [ ] **State-Based Waveform:** Tie a CSS/SVG animation to the `assistant_state` -> UI pulses beautifully when listening without audio lag.
-- [ ] **Live Command History:** Push `last_heard` from Python to the web UI -> The dashboard displays real-time transcriptions of what you said.
-- [ ] **Snooze Engine:** Create a `/api/snooze` endpoint with a frontend countdown clock -> You can click snooze and visually see the countdown.
+- [x] **State-Based Waveform:** Tie a CSS/SVG animation to the `assistant_state` -> UI pulses beautifully when listening without audio lag.
+- [x] **Live Command History:** Push `last_heard` from Python to the web UI -> The dashboard displays real-time transcriptions of what you said.
+- [x] **Snooze Engine:** Create a `/api/snooze` endpoint with a frontend countdown clock -> You can click snooze and visually see the countdown.
 
 ### Day 3: System Hooks — The "Easy" AppleScript Integrations 
 **Goal:** Give Macoo basic control over macOS using reliable, built-in commands.
@@ -68,37 +68,36 @@ Macoo/
 ### Day 4: Integrating the LLM Brain (Gemini/OpenAI) 
 **Goal:** Rip out regex strings and replace them with natural language understanding. Let AI figure out the intent.
 - [x] **implement gemini api**
-- [x] **LLM Engine Integration:** Wrap Gemini/OpenAI client in `llm_engine.py` -> Macoo uses massive cloud intelligence instead of rigid regex.
-- [ ] **System Prompting:** Design a pristine personality and tool instructions -> Macoo responds contextually without breaking character.
-- [ ] **Intent Function Calling:** Parse LLM JSON to trigger specific logic functions -> "It's too loud" automatically maps to the Volume Down action.
-- [ ] **Regex Fallback:** Build a graceful network failure catch -> The assistant still runs offline basic commands if Wi-Fi drops.
+- [x] **LLM Engine Integration:** Wrap Gemini client in `llm_engine.py` -> Macoo uses cloud intelligence instead of rigid regex.
+- [x] **System Prompting:** Design a pristine personality and tool instructions -> Macoo responds contextually via JSON.
+- [x] **Intent Function Calling:** Parse LLM JSON to trigger specific logic functions -> "Too loud" maps to Volume Down instantly.
+- [x] **Intelligence Fallback:** Build a graceful network failure catch -> Macoo uses Regex or Google Search if Gemini is busy.
 
 ### Day 5: App Orchestration (Workflows / Scenes)
-mac keywork recognise as asap fuly agresive 
-**Goal:** Compound commands that launch your entire productive environment in one sentence.
+- [ ] **Aggressive Recognition:** Fully overhauled wake-word listener to eliminate blind spots and misinterpretations.
 - [ ] **Scene Parser:** Define a YAML configuration file for custom workflow bundles -> You can define 10 disparate actions as a single named scene.
 - [ ] **Coding Setup Event:** Build a "Ready to Code" macro -> VS Code, Chrome, Terminal, and DB open automatically with volume set nicely to 20%.
 - [ ] **Do Not Disturb Hook:** Integrate a DND Focus trigger element -> A "Meeting Mode" scene silences Slack natively and starts Zoom seamlessly.
 
-### Day 6: Task reminder
-- [ ] **task note today i have a meeting at 3pm**
-- [ ] **task note what are my tasks today**
-- [ ] **task note what are my tasks for tomorrow**
-- [ ] **task note what are my tasks for this week**
-- [ ] **task note what are my tasks for this month**
-- [ ] **task note what are my tasks for this year**
-
 ---
 
-## 📅 Phase 2: Deep macOS Integration (Days 6–10)
+## 📅 Phase 2: Deep macOS Integration (Days 6–11)
 > **Goal:** Give Macoo the ability to manipulate the OS on a deeper level.
 
-### Day 7: Contextual Memory — SQLite Local Database 
+### Day 6: Contextual Memory — SQLite Local Database 
 **Goal:** Make Macoo remember you. A truly smart assistant recalls past context.
-- [ ] **Database Setup:** Connect an SQLite database at `~/.macoo/memory.db` -> The system safely persists user data locally over reboots.
-- [ ] **History & Preferences Schema:** Build tables for conversations and settings -> Macoo securely tracks favorite cities and prior answers.
-- [ ] **Context Injection:** Pass recent DB rows dynamically into the LLM prompt -> You can ask natural follow-up questions intelligently.
+- [ ] **Database Setup:** Connect an SQLite database at `assistant/memory.db` -> The system safely persists user data locally over reboots.
+- [ ] **Core Schema:** Build tables for basic configurations and conversation logging -> Macoo securely tracks state and prior interactions.
 - [ ] **Dashboard Memory Sync:** Create a "Memories" card on the frontend HTML -> Users visually see exactly what Macoo has learned about them.
+
+### Day 7: Proactive Task Management — Reminders & Notes
+**Goal:** Transition from instant commands to time-aware persistence. Build the reminder skill on top of the DB.
+- [ ] **Natural Date Parsing:** Use Gemini to extract intent and timeframe from phrases like "tomorrow at 3pm" -> Macoo identifies precise timestamps from casual speech.
+- [ ] **Reminders Schema:** Add a dedicated `reminders` table to our SQLite memory -> Your tasks and reminders are saved securely and survive system restarts.
+- [ ] **Task Query Engine:** Build the logic for "What are my tasks for [timeframe]?" -> Macoo filters and summarizes your schedule for the day, week, or month correctly.
+- [ ] **Immediate Task Note:** Capture quick brain-dumps via "Task note: [content]" -> Macoo acknowledges and stores your thoughts instantly.
+
+make working setup dynamic 
 
 ### Day 8: Media Master & Auto-Ducking
 **Goal:** Handle media beautifully so Macoo never yells over your Spotify playback.
