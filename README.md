@@ -4,7 +4,7 @@
 
 Macoo is a premium, developer-centric voice assistant designed to sit natively on macOS. Unlike generic smart speakers, Macoo is optimized for **speed**, **local control**, and **intelligence fallbacks**. He combines the instant responsiveness of Local Regex with the deep reasoning of Google's Gemini LLM.
 
-![Macoo Dashboard](file:///Users/mac/.gemini/antigravity/brain/57e6aaec-9944-4d72-8323-8384568d71f1/dashboard_verification_1775639516735.png)
+![Macoo Dashboard](docs/images/dashboard.png)
 
 ---
 
