@@ -72,9 +72,17 @@ INTENTS = [
     ]},
 
     # System Hooks (macOS)
-    {"skill": "volume_up", "patterns": [r"\bvolume up\b", r"\blouder\b", r"\bincrease volume\b"]},
-    {"skill": "volume_down", "patterns": [r"\bvolume down\b", r"\bsofter\b", r"\bquieter\b", r"\bdecrease volume\b"]},
-    {"skill": "mute", "patterns": [r"\bmute\b"]},
+    {"skill": "volume_up", "patterns": [
+        r"\bvolume up\b", r"\blouder\b", r"\bincrease volume\b", 
+        r"\braise volume\b", r"\btoo (quiet|low)\b", r"\bturn it up\b",
+        r"\bvolume.*(low|quiet)\b"
+    ]},
+    {"skill": "volume_down", "patterns": [
+        r"\bvolume down\b", r"\bsofter\b", r"\bquieter\b", r"\bdecrease volume\b", 
+        r"\breduce volume\b", r"\blower volume\b", r"\btoo (loud|high)\b", r"\bturn it down\b",
+        r"\breduce it\b", r"\bvolume.*high\b"
+    ]},
+    {"skill": "mute", "patterns": [r"\bmute\b", r"\bsilence\b"]},
     {"skill": "set_volume", "patterns": [r"\bset volume to\b", r"\bvolume to\b", r"\bvolume\s+\d+"]},
     
     {"skill": "brightness_up", "patterns": [r"\bbrightness up\b", r"\bbrighter\b", r"\bincrease brightness\b"]},
@@ -114,90 +122,149 @@ def process(text: str) -> str:
     """
     Given a recognised text string, determine intent and return a spoken reply.
     """
+    from assistant.llm_engine import parse_intent
+    
+    skill = "unknown"
+    llm_data = None
+    
+    # 1. TRY OUR LOCAL BRAIN FIRST (Saves tokens, zero latency)
     skill = detect_intent(text)
+    
+    # 2. IF LOCAL BRAIN FAILS, ASK GEMINI
+    if skill == "unknown":
+        print(f"🕵️  Local brain confused. Consulting Gemini...")
+        llm_data = parse_intent(text)
+        if llm_data and llm_data.get("intent") and llm_data.get("intent") != "unknown":
+            skill = llm_data["intent"]
+            print(f"🧠 Gemini Intent Detected: {skill}")
+            
+            if skill == "chat":
+                return llm_data.get("spoken_response", "I'm not sure how to respond to that.")
+        else:
+            print(f"🔍 Both local brain and Gemini failed. Attempting Search Fallback...")
+            # Fail-safe: If it looks like a question, use the search skill instead of giving up
+            question_keywords = [
+                "who", "what", "where", "when", "why", "how", 
+                "tell me", "explain", "search", "find", "describe"
+            ]
+            if any(k in text.lower() for k in question_keywords):
+                print(f"📡 Triggering Search Fallback for natural language question.")
+                res = search_skill.search(text)
+                return f"One second, my AI brain is busy, but I looked that up for you: {res}"
+            
+            print(f"🔍 No question keywords found. Falling back to default.")
+    else:
+        print(f"🔍 Local Brain Detected: {skill}")
 
+    # Execute Skill Actions but prefer Gemini's spoken response if available
+    llm_response = llm_data.get("spoken_response") if llm_data else None
+    
     # ── Time & Date ───────────────────────────────────────────────────────── #
     if skill == "time":
-        return time_skill.get_time()
+        res = time_skill.get_time()
+        return llm_response if llm_response else res
 
     elif skill == "date":
-        return time_skill.get_date()
+        res = time_skill.get_date()
+        return llm_response if llm_response else res
 
     # ── Fun ───────────────────────────────────────────────────────────────── #
     elif skill == "joke":
-        return joke_skill.tell_joke()
+        res = joke_skill.tell_joke()
+        return llm_response if llm_response else res
 
     # ── Media & Entertainment ─────────────────────────────────────────────── #
     elif skill == "trailer":
-        return media_skill.play_trailer(text)
+        res = media_skill.play_trailer(text)
+        return llm_response if llm_response else res
 
     elif skill == "youtube":
-        return media_skill.play_youtube(text)
+        res = media_skill.play_youtube(text)
+        return llm_response if llm_response else res
 
     elif skill == "spotify":
-        return media_skill.play_spotify(text)
+        res = media_skill.play_spotify(text)
+        return llm_response if llm_response else res
 
     elif skill == "netflix":
-        return media_skill.open_netflix(text)
+        res = media_skill.open_netflix(text)
+        return llm_response if llm_response else res
 
     elif skill == "music":
-        return music_skill.play(text)
+        res = music_skill.play(text)
+        return llm_response if llm_response else res
 
     # ── Navigation ────────────────────────────────────────────────────────── #
     elif skill == "maps":
-        return media_skill.open_maps(text)
+        res = media_skill.open_maps(text)
+        return llm_response if llm_response else res
 
     # ── Apps ──────────────────────────────────────────────────────────────── #
     elif skill == "open_app":
-        return media_skill.open_app(text)
+        res = media_skill.open_app(text)
+        return llm_response if llm_response else res
 
     # ── Weather ───────────────────────────────────────────────────────────── #
     elif skill == "weather":
-        return weather_skill.get_weather(text)
+        res = weather_skill.get_weather(text)
+        return llm_response if llm_response else res
 
     # ── System ────────────────────────────────────────────────────────────── #
     elif skill == "volume_up":
-        return system_hooks.volume_up()
+        system_hooks.volume_up()
+        return llm_response if llm_response else "Volume increased."
 
     elif skill == "volume_down":
-        return system_hooks.volume_down()
+        system_hooks.volume_down()
+        return llm_response if llm_response else "Volume decreased."
 
     elif skill == "mute":
-        return system_hooks.mute_volume()
+        system_hooks.mute_volume()
+        return llm_response if llm_response else "Muted."
 
     elif skill == "set_volume":
-        return system_hooks.set_volume(text)
+        system_hooks.set_volume(text)
+        return llm_response if llm_response else "Volume adjusted."
 
     elif skill == "brightness_up":
-        return system_hooks.brightness_up()
+        system_hooks.brightness_up()
+        return llm_response if llm_response else "Increased brightness."
 
     elif skill == "brightness_down":
-        return system_hooks.brightness_down()
+        system_hooks.brightness_down()
+        return llm_response if llm_response else "Decreased brightness."
 
     elif skill == "set_brightness":
-        return system_hooks.set_brightness(text)
+        system_hooks.set_brightness(text)
+        return llm_response if llm_response else "Brightness adjusted."
 
     elif skill == "dark_mode":
-        return system_hooks.toggle_dark_mode()
+        system_hooks.toggle_dark_mode()
+        return llm_response if llm_response else "Toggled dark mode."
 
     elif skill == "battery":
-        return system_hooks.get_battery()
+        res = system_hooks.get_battery()
+        return llm_response if llm_response else res
 
     elif skill == "settings":
-        return system_hooks.open_settings_pane(text)
+        res = system_hooks.open_settings_pane(text)
+        return llm_response if llm_response else res
 
     elif skill == "shutdown":
-        return system_skill.shutdown()
+        system_skill.shutdown()
+        return llm_response if llm_response else "Shutting down."
 
     elif skill == "goodbye":
         return "__EXIT__"
 
     # ── Search ────────────────────────────────────────────────────────────── #
     elif skill == "google":
-        return media_skill.google_search(text)
+        res = media_skill.google_search(text)
+        return llm_response if llm_response else res
 
     elif skill == "search":
-        return search_skill.search(text)
+        res = search_skill.search(text)
+        return llm_response if llm_response else res
 
     # ── Fallback ──────────────────────────────────────────────────────────── #
     else:

@@ -98,6 +98,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 powerToggle.checked = data.is_active;
                 updateUI(data);
             }
+            
+            // Handle the API Badge state dynamically
+            const apiBadge = document.getElementById('api-status-badge');
+            const apiPill = document.getElementById('api-pulse-dot');
+            const apiText = document.getElementById('api-status-text');
+            
+            if (data.api_active) {
+                apiBadge.style.background = 'rgba(60, 255, 120, 0.1)';
+                apiBadge.style.borderColor = 'rgba(60, 255, 120, 0.3)';
+                apiPill.style.background = 'rgb(60, 255, 120)';
+                apiText.style.color = 'rgb(120, 255, 150)';
+                apiText.textContent = 'API Live (Gemini)';
+            } else {
+                apiBadge.style.background = 'rgba(255, 60, 60, 0.1)';
+                apiBadge.style.borderColor = 'rgba(255, 60, 60, 0.3)';
+                apiPill.style.background = 'rgb(255, 60, 60)';
+                apiText.style.color = 'rgb(255, 100, 100)';
+                apiText.textContent = 'API Offline (Regex)';
+            }
 
             // Pseudo-log for demo if something's happening in backend
             // In a real app we'd fetch actual logs from a /api/logs endpoint.

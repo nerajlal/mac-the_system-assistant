@@ -32,9 +32,16 @@
                 <h1>Mac<span class="accent">AI</span></h1>
             </div>
             
-            <div class="status-pill status-waiting" id="status-badge">
-                <span class="pulse-dot"></span>
-                <span class="status-text" id="status-text">Waiting</span>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div class="status-pill status-waiting" id="status-badge">
+                    <span class="pulse-dot"></span>
+                    <span class="status-text" id="status-text">Waiting</span>
+                </div>
+                
+                <div class="status-pill status-offline" id="api-status-badge" style="background: rgba(255, 60, 60, 0.1); border-color: rgba(255, 60, 60, 0.3);">
+                    <span class="pulse-dot" style="background: rgb(255, 60, 60);" id="api-pulse-dot"></span>
+                    <span class="status-text" id="api-status-text" style="color: rgb(255, 100, 100);">API Offline (Regex)</span>
+                </div>
             </div>
         </header>
 

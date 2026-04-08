@@ -13,48 +13,38 @@ from assistant.config import Config
 
 _recognizer = sr.Recognizer()
 _recognizer.energy_threshold = Config.ENERGY_THRESHOLD
-_recognizer.dynamic_energy_threshold = True
 _recognizer.pause_threshold = Config.PAUSE_THRESHOLD
-
-_SAMPLE_RATE = 16000   # Hz — standard for speech recognition
-_CHANNELS = 1          # Mono
-
+_SAMPLE_RATE = 16000
 
 def _record(duration: int = Config.PHRASE_LIMIT) -> np.ndarray:
-    """Record from the default microphone for up to `duration` seconds."""
-    print("🎤  Listening…")
+    """Record from the default microphone (sounddevice)."""
     audio = sd.rec(
         int(duration * _SAMPLE_RATE),
         samplerate=_SAMPLE_RATE,
-        channels=_CHANNELS,
+        channels=1,
         dtype="int16",
     )
     sd.wait()
     return audio
 
-
-def _numpy_to_audio_data(audio_np: np.ndarray) -> sr.AudioData:
-    """Convert a numpy int16 array to an sr.AudioData object."""
+def _to_audio_data(audio_np: np.ndarray) -> sr.AudioData:
+    """Convert numpy to sr.AudioData."""
+    import io
+    import soundfile as sf
     buf = io.BytesIO()
     sf.write(buf, audio_np, _SAMPLE_RATE, format="WAV", subtype="PCM_16")
     buf.seek(0)
-    wav_bytes = buf.read()
-    return sr.AudioData(wav_bytes, _SAMPLE_RATE, 2)  # 2 bytes per sample (int16)
-
+    return sr.AudioData(buf.read(), _SAMPLE_RATE, 2)
 
 def listen(timeout: int = Config.LISTEN_TIMEOUT, phrase_limit: int = Config.PHRASE_LIMIT) -> Optional[str]:
     """
     Record audio from the microphone and return recognised text, or None.
-    `timeout` is unused in sounddevice mode (we record for phrase_limit seconds).
     """
     try:
+        print("🎤  Listening…")
         audio_np = _record(duration=phrase_limit)
-        audio_data = _numpy_to_audio_data(audio_np)
-    except Exception as e:
-        print(f"❌  Microphone error: {e}")
-        return None
-
-    try:
+        audio_data = _to_audio_data(audio_np)
+        
         text = _recognizer.recognize_google(audio_data, language=Config.LANGUAGE)
         print(f"🗣️  You said: {text}")
         return text
@@ -62,4 +52,7 @@ def listen(timeout: int = Config.LISTEN_TIMEOUT, phrase_limit: int = Config.PHRA
         return None
     except sr.RequestError as e:
         print(f"❌  Speech service error: {e}")
+        return None
+    except Exception as e:
+        print(f"❌  Microphone error: {e}")
         return None

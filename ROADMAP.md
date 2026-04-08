@@ -2,7 +2,7 @@
 
 > **"From Hardcoded Hack to Full macOS AI Assistant"**
 > 
-> A structured plan to evolve **Macoo** from a simple voice-command tool into a fully intelligent, context-aware macOS assistant — one day at a time.
+> A structured plan to evolve **Macoo** from a simple voice-command tool into a fully intelligent, context-aware macOS assistant. The flow is designed to build the brilliant frontend UI first, wire the cognitive brain, and finally deeply integrate into the Mac system.
 
 ---
 
@@ -10,19 +10,19 @@
 
 | Phase | Days | Focus | Status |
 |---|---|---|---|
-| **Phase 1** — The Foundations | Days 1–5 | UI/UX + LLM Integration | 🟡 In Progress |
-| **Phase 2** — System & Window Mastery | Days 6–10 | Deep macOS Integration | ⚪ Not Started |
-| **Phase 3** — Developer Superpowers | Days 11–15 | Full-Stack Dev Assistant | ⚪ Not Started |
-| **Phase 4** — Expansion & Polishing | Days 16–20 | Connectivity + Final Reveal | ⚪ Not Started |
+| **Phase 1** | Days 1–5 | The Brain & Beautiful UI | 🟡 In Progress |
+| **Phase 2** | Days 6–10 | Deep macOS Integration | ⚪ Not Started |
+| **Phase 3** | Days 11–15 | Developer Superpowers | ⚪ Not Started |
+| **Phase 4** | Days 16–20 | Proactive AI & Polish | ⚪ Not Started |
 
-**Overall Progress: `5/20 Days`** ████░░░░░░░░░░░░ 25%
+**Overall Progress: `3/20 Days` Completed**
 
 ---
 
 ## 🏗️ Current Architecture
 
 ```
-Alexa/
+Macoo/
 ├── main.py                      # Entry point — runs voice loop + web server
 ├── app.py                       # Flask web dashboard (port 5050)
 ├── requirements.txt             # Python dependencies
@@ -30,16 +30,9 @@ Alexa/
 │   ├── config.py                # Settings: wake word, language, TTS config
 │   ├── listener.py              # Microphone → text (Google STT via sounddevice)
 │   ├── speaker.py               # Text → voice (macOS 'say' / pyttsx3 fallback)
-│   ├── wake_word.py             # "Hey Mac" detection loop
+│   ├── wake_word.py             # "Hey Macoo" detection loop
 │   ├── brain.py                 # Regex intent matching → skill routing
-│   └── skills/
-│       ├── time_skill.py        # Time & date
-│       ├── weather_skill.py     # OpenWeatherMap API
-│       ├── joke_skill.py        # Random jokes
-│       ├── search_skill.py      # Wikipedia/web search
-│       ├── music_skill.py       # Generic "play" handler
-│       ├── media_skill.py       # YouTube, Spotify, Netflix, Maps, Apps
-│       └── system_skill.py      # Shutdown
+│   └── skills/                  # hardcoded skills (time, joke, etc.)
 ├── templates/
 │   └── index.html               # Glassmorphic web dashboard
 └── static/
@@ -47,622 +40,161 @@ Alexa/
     └── app.js                   # Dashboard interactivity + polling
 ```
 
-### What Already Works ✅
-- **Wake Word:** "Hey Mac" detection with command extraction
-- **Voice I/O:** sounddevice recording → Google STT → macOS `say` TTS
-- **Hardcoded Intents:** Regex pattern matching for ~15 intent categories
-- **Skills:** Time, date, jokes, weather, web search, media (YouTube/Spotify/Netflix), maps, app launcher, system shutdown
-- **Web Dashboard:** Flask server on `:5050` with glassmorphic UI, power toggle, activity stream
-- **Modes:** Wake-word mode, always-listening mode, text-input mode
+---
 
-### What Needs Improvement 🔧
-- All intent routing is **hardcoded regex** — no NLU/LLM understanding
-- No **contextual memory** — every interaction is stateless
-- No **AppleScript/pyobjc** system hooks (volume, brightness, window management)
-- Speaker uses macOS `say` with **Daniel voice** — no custom TTS
-- Dashboard has no **waveform visualizer** or **snooze** functionality
-- No **database** — nothing persists between sessions
+## 📅 Phase 1: The Brain & Beautiful UI (Days 1–5)
+> **Goal:** Build a stunning base and replace the hardcoded regex with a real LLM.
+
+### Day 1: The Evolution of Macoo — Intro & Wake Word 
+**Goal:** Prove the concept. Show the current version and get the wake word reliable.
+- [x] **Voice Assistant Loop:** Build `main.py`, listener, and speaker -> Macoo can listen and reply gracefully.
+- [x] **Wake Word Detection:** Integrate Google STT with command extraction -> Macoo responds securely to "Hey Macoo".
+- [x] **Testing Modes:** Add `--no-wake` and `--text` CLI flags -> Developers can test logic quietly without speaking.
+- [x] **Global Rebranding:** Search and replace "Alexa" with "Mac" -> The branding is consistent across the codebase.
+
+### Day 2: The Premium Dashboard — Live State & Feedback 
+**Goal:** Make it look high-end without over-engineering the backend logic.
+- [ ] **State-Based Waveform:** Tie a CSS/SVG animation to the `assistant_state` -> UI pulses beautifully when listening without audio lag.
+- [ ] **Live Command History:** Push `last_heard` from Python to the web UI -> The dashboard displays real-time transcriptions of what you said.
+- [ ] **Snooze Engine:** Create a `/api/snooze` endpoint with a frontend countdown clock -> You can click snooze and visually see the countdown.
+
+### Day 3: System Hooks — The "Easy" AppleScript Integrations 
+**Goal:** Give Macoo basic control over macOS using reliable, built-in commands.
+- [x] **Audio Control:** Trigger AppleScript volume commands -> Macoo adjusts macOS volume up, down, or mutes exactly.
+- [x] **Screen Control:** Simulate brightness media keys via AppleScript -> Macoo dims or brightens your physical screen natively.
+- [x] **Theme Toggling:** Pass Dark Mode system events -> The macOS UI changes theme instantly based on your voice.
+- [x] **App Launching:** Access `open` URL schemes for apps/Settings -> Macoo safely opens VS Code, Safari, and specific Settings panels.
+
+### Day 4: Integrating the LLM Brain (Gemini/OpenAI) 
+**Goal:** Rip out regex strings and replace them with natural language understanding. Let AI figure out the intent.
+- [x] **implement gemini api**
+- [x] **LLM Engine Integration:** Wrap Gemini/OpenAI client in `llm_engine.py` -> Macoo uses massive cloud intelligence instead of rigid regex.
+- [ ] **System Prompting:** Design a pristine personality and tool instructions -> Macoo responds contextually without breaking character.
+- [ ] **Intent Function Calling:** Parse LLM JSON to trigger specific logic functions -> "It's too loud" automatically maps to the Volume Down action.
+- [ ] **Regex Fallback:** Build a graceful network failure catch -> The assistant still runs offline basic commands if Wi-Fi drops.
+
+### Day 5: App Orchestration (Workflows / Scenes)
+mac keywork recognise as asap fuly agresive 
+**Goal:** Compound commands that launch your entire productive environment in one sentence.
+- [ ] **Scene Parser:** Define a YAML configuration file for custom workflow bundles -> You can define 10 disparate actions as a single named scene.
+- [ ] **Coding Setup Event:** Build a "Ready to Code" macro -> VS Code, Chrome, Terminal, and DB open automatically with volume set nicely to 20%.
+- [ ] **Do Not Disturb Hook:** Integrate a DND Focus trigger element -> A "Meeting Mode" scene silences Slack natively and starts Zoom seamlessly.
+
+### Day 6: Task reminder
+- [ ] **task note today i have a meeting at 3pm**
+- [ ] **task note what are my tasks today**
+- [ ] **task note what are my tasks for tomorrow**
+- [ ] **task note what are my tasks for this week**
+- [ ] **task note what are my tasks for this month**
+- [ ] **task note what are my tasks for this year**
 
 ---
 
-## 📅 Phase 1: The Foundations (Days 1–5)
+## 📅 Phase 2: Deep macOS Integration (Days 6–10)
+> **Goal:** Give Macoo the ability to manipulate the OS on a deeper level.
 
-> **Focus:** Improving the UI/UX and moving away from hardcoded logic.
+### Day 7: Contextual Memory — SQLite Local Database 
+**Goal:** Make Macoo remember you. A truly smart assistant recalls past context.
+- [ ] **Database Setup:** Connect an SQLite database at `~/.macoo/memory.db` -> The system safely persists user data locally over reboots.
+- [ ] **History & Preferences Schema:** Build tables for conversations and settings -> Macoo securely tracks favorite cities and prior answers.
+- [ ] **Context Injection:** Pass recent DB rows dynamically into the LLM prompt -> You can ask natural follow-up questions intelligently.
+- [ ] **Dashboard Memory Sync:** Create a "Memories" card on the frontend HTML -> Users visually see exactly what Macoo has learned about them.
 
----
+### Day 8: Media Master & Auto-Ducking
+**Goal:** Handle media beautifully so Macoo never yells over your Spotify playback.
+- [ ] **Auto-Ducking Logic:** Fetch and dip system volume slightly when the wake word sounds -> You don't have to yell over active music.
+- [ ] **Spotify AppleScript Handling:** Parse native Spotify app states -> Macoo pauses, skips, and identifies currently playing tracks locally.
+- [ ] **Smooth Audio Restoration:** Ramp volume back up securely post-response -> The music experience continues seamlessly after interaction.
 
-### Day 1: The Evolution of Macoo — Intro & Wake Word Demo
+### Day 9: Window Management
+**Goal:** Arrange your workspace by voice using Accessibility APIs or AppleScript.
+- [ ] **Window Focus APIs:** Hook into macOS Accessibility to track active apps -> Macoo knows precisely what window you are looking at.
+- [ ] **Coordinate Math Generator:** Write a Python function for split-screen subdivisions -> Dynamic bounds (left 50%, right 50%) are calculated instantly.
+- [ ] **Dynamic Layout AppleScript:** Pass target size arrays to System Events -> "Split screen VS Code and Chrome" organizes your entire monitor cleanly.
 
-**Goal:** Content day. Record the intro video. Demonstrate the current hardcoded version and explain the 20-day vision. Demo the "Hey Macoo" wake word.
+### Day 10: Background Health Monitor
+**Goal:** Proactive alerts for your Mac's performance so it never freezes unexpectedly.
+- [ ] **Daemon Monitoring Thread:** Initialize a quiet Python background looper -> Hardware checks run cleanly every 60 seconds without blocking Voice I/O.
+- [ ] **Battery State Parsing:** Read `pmset -g batt` outputs logically -> Macoo warns you audibly when battery drops precipitously below 10%.
+- [ ] **Process Scanning:** Identify runaway CPU tasks via the `ps` command -> The assistant prevents overheating before the fans spin up.
+- [ ] **Hardware UI Widgets:** Pipe realtime stats back to the Flask server -> The dashboard renders live graphical storage and battery bars dynamically.
 
-- [x] Build the basic voice assistant (main loop, listener, speaker)
-- [x] Implement "Hey Mac" wake word detection
-- [x] Set up project structure and entry point
-- [x] Add command-line modes (--no-wake, --text)
+### Day 11: Screen OCR (Vision) — Give Macoo "Eyes"
+**Goal:** Screenshot the screen and let the LLM answer questions about what is visible.
+- [ ] **Silent Capturing:** Trigger `screencapture -x` directly to a temporary directory -> A visual snapshot is taken silently purely under the hood.
+- [ ] **Vision API Piping:** Route the image payload strictly to Gemini Vision endpoint -> The LLM visually perceives and understands what is on your screen.
+- [ ] **Auto-Delete Security:** Remove the `/tmp` image payload instantly post-inference -> The system ensures no screen captures leak permanently to storage.
+- [ ] **Screen Assistance Flows:** Create prompts for debugging errors -> Ask "What is this error code?" and Macoo dictates a helpful debugging solution locally.
 
-**Current State:** The wake word detection works. Config says `Mac`, wake_word.py patterns still match `mac`. Need to fully rebrand to `macoo` across all files.
-
-**Files to touch:**
-- `assistant/config.py` — Update `ASSISTANT_NAME` and `WAKE_WORD`
-- `assistant/wake_word.py` — Update `_WAKE_PATTERNS` and `_strip_wake_word`
-- `main.py` — Update all "Hey Mac" string references
-- `templates/index.html` — Update branding text
-
----
-
-### Day 2: System Hooks (The Hands) — AppleScript & pyobjc
-
-**Goal:** Give Macoo actual control over macOS. Implement system commands via AppleScript and pyobjc.
-
-- [ ] Install `pyobjc` and add to `requirements.txt`
-- [ ] Create `assistant/skills/system_hooks.py`
-  - [x] Volume control (up, down, mute, set to X%)
-  - [x] Brightness control (up, down, set to X%)
-  - [ ] Open specific System Settings panes
-- [ ] Create AppleScript wrappers for:
-  - [x] Opening apps by name
-  - [x] Toggling Dark Mode
-  - [x] Getting battery percentage
-- [ ] Add new intents in `brain.py`:
-  - [x] `volume_up`, `volume_down`, `mute`, `set_volume`
-  - [x] `brightness_up`, `brightness_down`, `set_brightness`
-  - [x] `dark_mode`
-
-**New Dependencies:** `pyobjc-core`, `pyobjc-framework-Cocoa`
-
-**Key Implementation Notes:**
-```python
-# Volume via AppleScript
-import subprocess
-def set_volume(level: int):
-    subprocess.run(["osascript", "-e", f"set volume output volume {level}"])
-
-# Brightness via pyobjc (CoreDisplay framework)
-# Use IOKit for display brightness control
-```
-
----
-
-### Day 3: The UI Dashboard — Waveform Visualizer & Snooze
-
-**Goal:** Level up the web dashboard. Add a real-time audio waveform when Macoo is listening, and a snooze button to temporarily disable it.
-### mobile control ###
-- [ ] **Waveform Visualizer:**
-  - [ ] Create `/api/audio-level` endpoint in `app.py` to stream mic amplitude
-  - [ ] Build a Canvas/SVG waveform animation in `static/app.js`
-  - [ ] Animate in sync with microphone input (WebSocket or polling)
-  - [ ] Visual states: Idle (flat line) → Listening (active waves) → Processing (pulse)
-- [ ] **Snooze Button:**
-  - [ ] Add `/api/snooze` endpoint with configurable duration (5min, 15min, 30min)
-  - [ ] UI dropdown/button on the dashboard
-  - [ ] Auto-resume after snooze timer expires
-  - [ ] Visual countdown indicator on dashboard
-- [ ] **Dashboard Enhancements:**
-  - [ ] Add a "Last Command" card showing the most recent interaction
-  - [ ] Add a "Capabilities" quick-reference card
-  - [ ] Responsive layout improvements for mobile
-- [ ] Test on desktop and mobile Safari
-- [ ] Record demo video
-
-**Files to create/modify:**
-- `app.py` — New endpoints
-- `templates/index.html` — New cards & waveform container
-- `static/style.css` — Waveform & snooze styling
-- `static/app.js` — Waveform canvas rendering, snooze logic
-
----
-
-### Day 4: Integrating the "Brain" (LLM) — Gemini / OpenAI API
-
-**Goal:** Replace hardcoded regex intent matching with LLM-powered understanding. Show the dramatic difference.
-
-- [ ] Create `assistant/llm_engine.py`:
-  - [ ] Abstract LLM interface (supports Gemini & OpenAI)
-  - [ ] Function calling / tool-use for structured intent extraction
-  - [ ] Fallback to regex if API is unreachable
-- [ ] Set up API key management:
-  - [ ] `.env` file for API keys (add to `.gitignore`)
-  - [ ] `python-dotenv` for loading
-- [ ] Update `brain.py`:
-  - [ ] Add LLM intent mode alongside regex mode
-  - [ ] Config toggle: `INTENT_MODE = "llm"` vs `"regex"`
-  - [ ] LLM understands natural language ("It's too bright in here" → lower brightness)
-- [ ] Demo comparisons:
-  - [ ] "Turn the volume down" — both modes work ✅
-  - [ ] "It's too bright in here" — only LLM mode understands ✅
-  - [ ] "I can barely hear anything" — LLM → raise volume ✅
-- [ ] Add conversational fallback (no matched intent = chat with LLM)
-- [ ] Record side-by-side demo video
-
-**New Dependencies:** `google-generativeai` or `openai`, `python-dotenv`
-
-**Key Architecture Decision:**
-```
-User Speech → STT → [LLM Intent Classification] → Skill Router → Action → TTS
-                           ↓ (fallback)
-                    [Regex Pattern Match]
-```
-
----
-
-### Day 5: Contextual Memory — SQLite Local Database
-
-**Goal:** Give Macoo memory. It should remember things you said earlier, store preferences, and recall context.
-
-- [ ] Create `assistant/memory.py`:
-  - [ ] SQLite database at `~/.macoo/memory.db`
-  - [ ] Tables: `conversations`, `preferences`, `reminders`, `notes`
-  - [ ] `conversations` — timestamp, user_input, intent, response
-  - [ ] `preferences` — key-value store (preferred volume, city, etc.)
-  - [ ] `notes` — "Remember that..." storage
-  - [ ] `reminders` — time-based alerts
-- [ ] Add memory-related intents:
-  - [ ] "Remember that my meeting is at 3pm"
-  - [ ] "What did I ask you earlier?"
-  - [ ] "What's my preferred volume?"
-- [ ] Context injection into LLM:
-  - [ ] Pass last N interactions as context to the LLM
-  - [ ] Enable follow-up questions ("What about tomorrow?" after a weather query)
-- [ ] Dashboard integration:
-  - [ ] Show conversation history on the web UI
-  - [ ] Add a "Memory" card showing stored notes/preferences
-- [ ] Record demo video
-
-**New Dependencies:** `sqlite3` (built-in)
-
-**Database Schema:**
-```sql
-CREATE TABLE conversations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    user_input TEXT NOT NULL,
-    detected_intent TEXT,
-    response TEXT NOT NULL,
-    session_id TEXT
-);
-
-CREATE TABLE preferences (
-    key TEXT PRIMARY KEY,
-    value TEXT NOT NULL,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE notes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    content TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    tags TEXT
-);
-
-CREATE TABLE reminders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    message TEXT NOT NULL,
-    remind_at DATETIME NOT NULL,
-    is_done BOOLEAN DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-```
-
----
-
-## 📅 Phase 2: System & Window Mastery (Days 6–10)
-
-> **Focus:** Deep integration with macOS productivity.
-
----
-
-### Day 6: Window Management — Split Screen via Voice
-
-**Goal:** Move and resize app windows with voice commands. "Put VS Code on the left, Chrome on the right."
-
-- [ ] Create `assistant/skills/window_skill.py`:
-  - [ ] Get list of running apps and their windows
-  - [ ] Move window to left/right half of screen
-  - [ ] Full-screen a window
-  - [ ] Center a window
-  - [ ] Move to specific display (multi-monitor)
-- [ ] AppleScript for window manipulation:
-  ```applescript
-  tell application "System Events"
-      set frontmost of application process "Code" to true
-      tell process "Code"
-          set position of window 1 to {0, 25}
-          set size of window 1 to {960, 1055}
-      end tell
-  end tell
-  ```
-- [ ] Add window intents to brain:
-  - [ ] "Split screen VS Code and Chrome"
-  - [ ] "Move Safari to the right"
-  - [ ] "Full screen Slack"
-- [ ] Record demo video
-
----
-
-### Day 7: App Orchestration (Workflows / Scenes)
-
-**Goal:** Create "Scenes" — compound commands that launch your entire environment.
-
-- [ ] Create `assistant/skills/workflow_skill.py`:
-  - [ ] Define scenes in a YAML/JSON config file
-  - [ ] Each scene = list of actions (open app, set volume, arrange windows, etc.)
-- [ ] Built-in scenes:
-  - [ ] **"Ready to code"** → Open VS Code, Terminal, Chrome (localhost), set volume to 20%
-  - [ ] **"Meeting mode"** → Open Zoom/Meet, mute Spotify, set DND on
-  - [ ] **"Chill mode"** → Open Spotify, lower brightness, close work apps
-- [ ] Custom scene creation via voice:
-  - [ ] "Macoo, save this as my coding scene"
-- [ ] Store scenes in SQLite (from Day 5)
-- [ ] Record demo video
-
-**Config Example:**
-```yaml
-scenes:
-  coding:
-    name: "Ready to Code"
-    actions:
-      - type: open_app
-        app: "Visual Studio Code"
-      - type: open_app
-        app: "Google Chrome"
-        url: "http://localhost:3000"
-      - type: open_app
-        app: "Terminal"
-      - type: set_volume
-        level: 20
-      - type: window_layout
-        layout: "vscode-left-chrome-right"
-```
-
----
-
-### Day 8: Battery & Health Monitor
-
-**Goal:** Proactive alerts. Macoo watches your system and warns you about issues.
-
-- [ ] Create `assistant/skills/health_skill.py`:
-  - [ ] Monitor battery level (alert at 20%, 10%, 5%)
-  - [ ] Monitor CPU temperature via `powermetrics` or IOKit
-  - [ ] Detect high CPU usage processes
-  - [ ] Monitor disk space
-  - [ ] RAM usage alerts
-- [ ] Background monitoring thread:
-  - [ ] Check every 60 seconds
-  - [ ] Speak alerts proactively ("Hey, your battery is at 10%!")
-  - [ ] Don't repeat the same alert within 5 minutes
-- [ ] Dashboard widget:
-  - [ ] Battery gauge with percentage
-  - [ ] CPU/RAM bars
-  - [ ] "Health Score" indicator
-- [ ] Voice queries:
-  - [ ] "Macoo, how's my battery?"
-  - [ ] "What's eating my CPU?"
-- [ ] Record demo video
-
----
-
-### Day 9: Media Control & Volume Ducking
-
-**Goal:** Auto-duck music when you say "Hey Macoo." Smart media integration.
-
-- [ ] Implement volume ducking:
-  - [ ] When wake word detected → save current volume → set to 10%
-  - [ ] After response → restore original volume
-  - [ ] Handle edge case: no audio playing
-- [ ] Spotify integration:
-  - [ ] Pause/Resume via AppleScript
-  - [ ] Skip/Previous track
-  - [ ] "What song is this?" — get current track info
-- [ ] Apple Music support:
-  - [ ] Same controls via AppleScript
-- [ ] Media-aware responses:
-  - [ ] "Macoo, pause the music" → pauses whatever's playing
-  - [ ] "Macoo, what's playing?" → reads track name and artist
-- [ ] Record demo video
-
----
-
-### Day 10: Screen OCR (Vision) — Give Macoo "Eyes"
-
-**Goal:** Screenshot the screen and use OCR/Vision API to answer questions about what's visible.
-
-- [ ] Create `assistant/skills/vision_skill.py`:
-  - [ ] Take screenshot via `screencapture` command
-  - [ ] Send to Google Vision API or Gemini Vision
-  - [ ] Parse response and speak it
-- [ ] Use cases:
-  - [ ] "Macoo, what's that error on my screen?"
-  - [ ] "Read the text on my screen"
-  - [ ] "What app is in the foreground?"
-- [ ] Privacy controls:
-  - [ ] Only capture when explicitly asked
-  - [ ] Delete screenshot immediately after processing
-  - [ ] Never store screen content in memory
-- [ ] Record demo video
-
-**New Dependencies:** `Pillow`, `google-generativeai` (for Gemini Vision)
-
+### Day
+make thing control from mobile like telegram bot or somthing any ways
 ---
 
 ## 📅 Phase 3: Developer Superpowers (Days 11–15)
+> **Goal:** Turning the assistant into a Full-Stack companion.
 
-> **Focus:** Making Macoo a true Full-Stack Assistant for Laravel/MedusaJS work.
+### Day 12: Terminal Integration — Shell Control
+**Goal:** Execute shell commands hands-free safely without trashing the system.
+- [ ] **Subprocess Wrapper:** Process `subprocess.Popen` securely with timeout limits -> Shell scripts execute in the background gracefully without hanging.
+- [ ] **Strict Command Allowlist:** Lock string matching to safe commands only (e.g., `php`, `npm`) -> Catastrophic OS deletions physically become impossible.
+- [ ] **Verbal Safety Confirmations:** Pause and require an explicit vocal "Yes" beforehand -> Destructive sequences like migrations strongly require human authorization.
 
----
+### Day 13: Snippet Generator & Clipboard Manager
+**Goal:** Generate boilerplate code via voice and automatically paste it into your IDE.
+- [ ] **Raw Code Prompting:** Ask the LLM to forcefully skip Markdown formatting tags -> Outputs pure, clean syntactical code boilerplate exactly as requested.
+- [ ] **Clipboard Hook Routing:** Pipe the clean return string right into macOS `pbcopy` -> The codebase is forcefully pushed into your OS clipboard buffer.
+- [ ] **Auto-Paste Simulation:** Simulate a manual `CMD + V` keypress in the foreground app -> Saying "Write a User Migration" types the boilerplate directly into your IDE.
 
-### Day 11: Terminal Integration — Shell Commands via Voice
+### Day 14: Git Assistant
+**Goal:** A smart Git workflow driven by voice so you never have to think about commit messages again.
+- [ ] **Background Diff Reader:** Securely read the uncommitted tree using `git diff --cached` -> Macoo digests code modifications perfectly.
+- [ ] **Message Generation:** Pass the code diff neatly into the LLM for deep analysis -> Generates clear, conventional commit messages perfectly matching your style.
+- [ ] **Pipeline ExecutionSequence:** Request voice validation, execute `git commit`, and run `git push` -> Your entire git deployment workflow happens totally hands-free.
 
-**Goal:** Execute shell commands hands-free. Run migrations, start servers, check logs.
+### Day 15: API Documentation Search
+**Goal:** Ask framework questions without breaking focus to open Safari and StackOverflow.
+- [ ] **RAG / Search Hook:** Integrate the Perplexity API or an HTML Scraper automation -> Macoo fetches live technical documentation right off the internet securely.
+- [ ] **Technical Summarization:** Feed external manuals to the LLM to map concepts practically -> Macoo finds precise API endpoints easily without launching Safari.
+- [ ] **Vocal Structuring Guidelines:** Prompt the LLM strictly for auditory spoken delivery -> Syntactical brackets are intelligently skipped so logical concepts are vocalized smoothly.
 
-- [ ] Create `assistant/skills/terminal_skill.py`:
-  - [ ] Safe command execution with output capture
-  - [ ] Whitelist of allowed commands (security!)
-  - [ ] Command categories: `git`, `npm`, `php artisan`, `docker`, `python`
-- [ ] Natural language → shell command mapping (via LLM):
-  - [ ] "Run migrations" → `php artisan migrate`
-  - [ ] "Start the Medusa dev server" → `npx medusa develop`
-  - [ ] "Check if the server is running" → `lsof -i :3000`
-- [ ] Safety features:
-  - [ ] Confirmation before destructive commands (`rm`, `drop`, `reset`)
-  - [ ] Read output back (or summarize if too long)
-  - [ ] Timeout for long-running commands
-- [ ] Record demo video
-
----
-
-### Day 12: Snippet Generator — Voice-Driven Code Paste
-
-**Goal:** Paste code snippets into your editor via voice command.
-
-- [ ] Create `assistant/skills/snippet_skill.py`:
-  - [ ] Snippet library stored in JSON/YAML
-  - [ ] Categories: Laravel, React, MedusaJS, SQL, API endpoints
-- [ ] Paste mechanism:
-  - [ ] Copy to clipboard via `pbcopy`
-  - [ ] Optional: Use AppleScript to paste into frontmost app
-- [ ] LLM-generated snippets:
-  - [ ] "Macoo, write a Laravel migration for a products table"
-  - [ ] LLM generates code → clipboard → paste
-- [ ] Record demo video
+### Day 16: Database Explorer
+**Goal:** Get insights directly from your DB tables via voice queries.
+- [ ] **DB Authentication:** Establish safe SQLAlchemy or raw connections to Postgres/MySQL -> Macoo links directly reliably into your local Laravel databases.
+- [ ] **Database Schema Awareness:** Push column blueprints cleanly to the LLM context -> The backend model successfully writes highly accurate relational SQL queries securely.
+- [ ] **Read-Only Enforcements:** Hard-block query inputs not starting with pure `SELECT` safely -> Completely prevents verbal misinterpretations from accidentally overwriting production DB tables.
+- [ ] **Insight Feedback loop:** Execute secure SQL and parse the return metrics back to Speech -> Asking "How many clients registered today?" speaks exactly the resulting count.
 
 ---
 
-### Day 13: Git Assistant — Smart Commits & Status
+## 📅 Phase 4: Proactive AI & Polish (Days 16–20)
+> **Goal:** From Side Project to Daily Driver — The final production polish.
 
-**Goal:** Full Git workflow via voice. Smart commit messages written by the LLM.
+### Day 17: Slack / Email Summarizer
+**Goal:** Digest unread communications effortlessly before starting deep work.
+- [ ] **Communication Webhooks/OAuth:** Authenticate secure connections cleanly to Slack and Gmail -> A safe automated pipeline streams into your unread communications hubs.
+- [ ] **Digest Aggregation Algorithm:** Programmatically sort undelivered messages by sender/importance -> Large messy volumes of morning chatter get prioritized highly efficiently.
+- [ ] **Vocal Briefing Sequence:** Create the custom "Check Messages" intent voice action -> Macoo delivers a clear, concise audible morning briefing properly summarizing everything.
 
-- [ ] Create `assistant/skills/git_skill.py`:
-  - [ ] `git status` — spoken summary
-  - [ ] `git diff` → LLM → generate commit message
-  - [ ] `git add . && git commit -m "<message>"` with confirmation
-  - [ ] `git push` with branch awareness
-  - [ ] `git log --oneline -5` — read recent commits
-- [ ] Smart commit message flow:
-  1. User: "Macoo, commit these changes"
-  2. Macoo runs `git diff --stat`
-  3. Sends diff summary to LLM
-  4. LLM generates commit message
-  5. Macoo: "I'll commit with message: 'Add user auth middleware and update routes'. Shall I proceed?"
-  6. User: "Yes" → commits
-- [ ] Record demo video
+### Day 18: Premium Custom Voice
+**Goal:** Ditch the built-in macOS voice for an ultra-realistic, expressive AI personality.
+- [ ] **Ultra-Realistic Streaming Audio:** Establish ElevenLabs/OpenAI Audio fast WebSocket connections -> Premium audio files stream instantly without awkwardly waiting for bulk generations.
+- [ ] **Phrase Output Caching:** Hash common text replies and map them locally to audio files -> Drastically slashes response latency times and cleanly cuts monthly API costs down.
+- [ ] **Voice UI Selector:** Register an aesthetic Audio Dropdown strictly into the Flask dashboard -> You physically toggle away from basic macOS `say` right into premium engaging personalities.
 
----
+### Day 19: Proactive Outbound Actions
+**Goal:** Macoo should reach out to *you* when needed, rather than only speaking when spoken to.
+- [ ] **Event Bus Initialization:** Refactor the core infinite loop slightly to poll for internal system hooks -> Magically enables system triggers completely independent of uttering the wake word.
+- [ ] **CLI Subprocess Listening:** Catch cleanly when async script/terminal commands trigger standard exit codes -> Macoo can proactively audibly interrupt when your database migrations formally finish.
+- [ ] **Autarkic Alert Generation:** Analyze calendar items safely to dynamically insert spoken prompt reminders -> The system autonomously notifies you aloud "You have Standup precisely in 2 mins."
 
-### Day 14: API Documentation Search
+### Day 20: Security, Privacy & Latency Audit
+**Goal:** Fortify the codebase, secure keys, and make responses instant.
+- [ ] **Dotenv Security Lockdown:** Evict all hardcoded API connection keys permanently into an ignored `.env` file -> Ensures your GitHub repositories remain completely safely fully secured.
+- [ ] **Performance Tracing Audit:** Optimize standard execution paths and trim blocking Python text string calculations -> Phenomenally slashes average vocal response latency times significantly.
+- [ ] **Privacy Nuke Endpoint:** Connect standard UI buttons cleanly directly to backend SQLite drop table queries -> Assures the end user they can rapidly securely forget all their memory history in zero seconds.
 
-**Goal:** Search docs by voice. Ask about APIs and get spoken answers.
-
-- [ ] Create `assistant/skills/docs_skill.py`:
-  - [ ] Index key documentation sources:
-    - [ ] Laravel docs
-    - [ ] MedusaJS docs
-    - [ ] Shopify API docs
-    - [ ] React/Next.js docs
-  - [ ] Search locally cached docs or use web search + LLM summarization
-- [ ] Natural language queries:
-  - [ ] "How do I handle webhooks in Shopify?"
-  - [ ] "What's the Laravel syntax for a many-to-many relationship?"
-- [ ] LLM summarizes the relevant docs and speaks the answer
-- [ ] Record demo video
-
----
-
-### Day 15: Database Explorer — Query Your DB via Voice
-
-**Goal:** Talk to your database. Get insights without writing SQL.
-
-- [ ] Create `assistant/skills/db_skill.py`:
-  - [ ] Connect to local MySQL/PostgreSQL
-  - [ ] Natural language → SQL via LLM
-  - [ ] Read-only mode by default (SELECT only)
-  - [ ] Write mode with explicit confirmation
-- [ ] Example queries:
-  - [ ] "How many orders today?" → `SELECT COUNT(*) FROM orders WHERE DATE(created_at) = CURDATE()`
-  - [ ] "Show me the latest 5 users" → reads out names/emails
-  - [ ] "What's the total revenue this week?"
-- [ ] Safety:
-  - [ ] Connection string stored in `.env`
-  - [ ] Read-only by default
-  - [ ] Table/column awareness injected into LLM context
-- [ ] Record demo video
-
----
-
-## 📅 Phase 4: Expansion & Polishing (Days 16–20)
-
-> **Focus:** Connectivity and the "Final Reveal."
-
----
-
-### Day 16: Slack/Email Summarizer
-
-**Goal:** Connect to your communication tools. Summarize unread messages.
-
-- [ ] Create `assistant/skills/comms_skill.py`:
-  - [ ] Slack integration (Slack Bot API):
-    - [ ] Fetch unread messages from specific channels
-    - [ ] LLM-summarize and speak back
-  - [ ] Gmail integration (Gmail API):
-    - [ ] Fetch unread emails
-    - [ ] Summarize subject + sender + key content
-  - [ ] "Macoo, check my messages" → summarized digest
-- [ ] OAuth flow for secure authentication
-- [ ] Record demo video
-
----
-
-### Day 17: Voice Customization — Premium TTS
-
-**Goal:** Move beyond the default macOS `say` voice. Use ElevenLabs for a custom "Macoo" voice.
-
-- [ ] Create `assistant/tts_engine.py`:
-  - [ ] ElevenLabs API integration
-  - [ ] Voice cloning or pre-made voice selection
-  - [ ] Caching responses for frequently used phrases
-  - [ ] Fallback to macOS `say` if offline/quota exceeded
-- [ ] Update `speaker.py` to use the new TTS engine
-- [ ] A/B comparison: System voice vs. ElevenLabs
-- [ ] Add TTS config to dashboard (voice selector)
-- [ ] Record demo video
-
-**New Dependencies:** `elevenlabs`
-
----
-
-### Day 18: Security & Privacy
-
-**Goal:** Harden the assistant. Explain the security model on camera.
-
-- [ ] Security audit:
-  - [ ] All API keys in `.env`, never in source
-  - [ ] `.gitignore` covers `.env`, `memory.db`, screenshots
-  - [ ] No voice data stored permanently
-  - [ ] No cloud uploads of screen content
-- [ ] Implement security features:
-  - [ ] PIN/passphrase for destructive commands
-  - [ ] Audit log of all commands executed
-  - [ ] Config to disable specific skills (e.g., terminal, database)
-  - [ ] Network request logging
-- [ ] Privacy dashboard page:
-  - [ ] Show what data is stored locally
-  - [ ] Button to wipe all memory
-  - [ ] Toggle individual permissions
-- [ ] Record explainer video
-
----
-
-### Day 19: Stress Testing & Edge Cases
-
-**Goal:** Fun video — try to break Macoo. Test weird inputs, rapid commands, overlapping speech.
-
-- [ ] Test scenarios:
-  - [ ] Rapid-fire commands
-  - [ ] Background noise tolerance
-  - [ ] Multi-language mixing
-  - [ ] Very long commands
-  - [ ] Ambiguous commands ("Set it to loud" — volume or brightness?)
-  - [ ] Conflicting commands ("Turn up the volume and mute")
-  - [ ] Empty/gibberish wake words
-  - [ ] Network disconnection handling
-  - [ ] Concurrent web dashboard + voice commands
-- [ ] Fix discovered bugs
-- [ ] Document edge cases and their resolutions
-- [ ] Record the stress-test video (make it fun!)
-
----
-
-### Day 20: The Grand Finale — "24 Hours with Macoo"
-
-**Goal:** Cinematic wrap-up video. Show how Macoo helps build real projects (like Metomenu).
-
-- [ ] Plan the "day in the life" shoot:
-  - [ ] Morning routine: "Macoo, what's my schedule today?"
-  - [ ] Coding session: "Macoo, start my dev environment"
-  - [ ] Debugging: "Macoo, what's that error on my screen?"
-  - [ ] Git workflow: "Macoo, commit these changes"
-  - [ ] Breaks: "Macoo, play some lofi"
-  - [ ] End of day: "Macoo, summarize what I did today"
-- [ ] Polish all features for the demo
-- [ ] Final README update with complete feature list
-- [ ] Create a "Getting Started" guide for open source release
-- [ ] Record the grand finale video
-
----
-
-## 🔧 Technical Debt & Housekeeping
-
-These should be addressed throughout the 20 days:
-
-- [ ] Rename project folder from `Alexa/` to `Macoo/`
-- [ ] Update `README.md` with current branding and features
-- [ ] Add proper error handling across all skills
-- [ ] Add logging with `loguru` or Python `logging`
-- [ ] Create `setup.py` or `pyproject.toml` for packaging
-- [ ] Write unit tests for key modules (`brain.py`, `memory.py`, `llm_engine.py`)
-- [ ] CI/CD pipeline for linting and testing
-- [ ] Add type hints throughout the codebase
-- [ ] Document all API endpoints in the Flask app
-
----
-
-## 📦 Full Dependency List (Final)
-
-| Package | Added On | Purpose |
-|---|---|---|
-| `SpeechRecognition` | Day 0 | Microphone → text (Google STT) |
-| `pyttsx3` | Day 0 | Offline text → speech fallback |
-| `sounddevice` | Day 0 | Microphone access |
-| `soundfile` | Day 0 | Audio format conversion |
-| `requests` | Day 0 | HTTP API calls |
-| `wikipedia` | Day 0 | Web search summaries |
-| `Flask` | Day 0 | Web dashboard backend |
-| `pyobjc-core` | Day 2 | macOS system bindings |
-| `pyobjc-framework-Cocoa` | Day 2 | Cocoa framework access |
-| `python-dotenv` | Day 4 | Environment variable loading |
-| `google-generativeai` | Day 4 | Gemini LLM API |
-| `openai` | Day 4 | OpenAI API (alternative) |
-| `Pillow` | Day 10 | Image processing for OCR |
-| `elevenlabs` | Day 17 | Premium TTS voice |
-| `PyYAML` | Day 7 | Scene/workflow configs |
-| `loguru` | Ongoing | Better logging |
-
----
-
-## 🎥 Content Calendar
-
-| Day | Video Title | Type |
-|---|---|---|
-| 1 | "Meet Macoo — My AI Assistant Journey Begins" | Intro |
-| 2 | "Macoo Controls My Mac — AppleScript Magic" | Build |
-| 3 | "Building Macoo's Dashboard — Live Waveforms" | Build |
-| 4 | "Macoo Gets a Brain — LLM vs Hardcoded" | Build |
-| 5 | "Macoo Remembers Everything — SQLite Memory" | Build |
-| 6 | "Voice-Controlled Window Management" | Build |
-| 7 | "One Command Launches My Whole Dev Setup" | Build |
-| 8 | "Macoo Warns Me Before My Mac Overheats" | Build |
-| 9 | "Auto Volume Duck When I Speak" | Build |
-| 10 | "Macoo Can See My Screen — OCR Vision" | Advanced |
-| 11 | "Running Terminal Commands by Voice" | Build |
-| 12 | "Voice-to-Code Snippets" | Build |
-| 13 | "AI Writes My Git Commits" | Build |
-| 14 | "Macoo Searches API Docs For Me" | Build |
-| 15 | "Talk to Your Database" | Build |
-| 16 | "Macoo Reads My Slack & Email" | Build |
-| 17 | "Custom AI Voice with ElevenLabs" | Build |
-| 18 | "How I Keep Macoo Secure" | Explainer |
-| 19 | "Trying to Break My AI Assistant" | Fun |
-| 20 | "24 Hours with Macoo — The Finale" | Cinematic |
-
----
-
-## 📝 Notes
-
-- **Branding:** The assistant was originally named "Mac", then "Alexa", and is now being rebranded to **"Macoo"**. Some files still reference old names.
-- **Start Date:** April 7, 2026
-- **Tech Stack:** Python 3.x, Flask, SQLite, Google STT, Gemini/OpenAI, macOS AppleScript, pyobjc
-- **Target Platform:** macOS only (leverages AppleScript, `say`, IOKit, etc.)
-- **Content Platform:** YouTube (20-day build series)
-
----
-
-> _"The best assistant is one you build yourself."_ — Macoo Dev Log
+### Day 21: The Grand Finale
+**Goal:** The final cinematic demonstration and repository launch.
+- [ ] **Cinematic Script Production:** Plan a cohesive "Day in the Life" cinematic sequence actively demonstrating absolutely every core node -> Visually proves the massive undeniable value comprehensively.
+- [ ] **Path Abstraction & Cleanup:** Remove strictly all physical local system user paths targeting generic `os.path` properties -> Safely makes the assistant codebase fully scalable easily onto absolutely any modern macOS device seamlessly.
+- [ ] **Open Source Documentation:** Overhaul `README.md` intricately via interactive architectural Mermaid flow diagrams -> Ensures your resulting Github codebase community clearly fundamentally understands your entire backend architecture logically.

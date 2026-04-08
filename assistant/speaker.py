@@ -16,10 +16,12 @@ def speak(text: str) -> None:
     print(f"🤖  Mac: {text}")
 
     if _IS_MAC:
-        # macOS 'say' command — always produces clear audio
+        # macOS 'say' command — with embedded volume control
+        from assistant.config import Config
+        vol_tag = f"[[volm {Config.SPEECH_VOLUME}]]"
         try:
             subprocess.run(
-                ["say", "-v", "Daniel", "-r", "180", text],
+                ["say", "-v", "Daniel", "-r", str(Config.SPEECH_RATE), vol_tag + text],
                 check=True,
                 timeout=30,
             )

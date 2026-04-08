@@ -6,7 +6,8 @@ import logging
 assistant_state = {
     "is_active": True,
     "last_spoken": "",
-    "last_heard": ""
+    "last_heard": "",
+    "api_active": False
 }
 
 app = Flask(__name__)
@@ -21,6 +22,8 @@ def index():
 
 @app.route("/api/status", methods=["GET"])
 def get_status():
+    from assistant.llm_engine import model, GEMINI_API_KEY
+    assistant_state["api_active"] = (model is not None and GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_API_KEY_HERE")
     return jsonify(assistant_state)
 
 @app.route("/api/toggle", methods=["POST"])

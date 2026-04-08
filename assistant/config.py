@@ -11,14 +11,14 @@ class Config:
 
     # ── Speech Recognition ───────────────────────────────────────────────────
     LANGUAGE: str = "en-US"           # BCP-47 language tag for Google STT
-    ENERGY_THRESHOLD: int = 300       # Microphone sensitivity (lower = more sensitive)
-    PAUSE_THRESHOLD: float = 0.8      # Seconds of silence to mark end of phrase
+    ENERGY_THRESHOLD: int = 200       # Aggressive sensitivity (lower = more sensitive)
+    PAUSE_THRESHOLD: float = 0.5      # Snappier responses (Seconds of silence)
     LISTEN_TIMEOUT: int = 3           # Max seconds to wait for speech to begin
     PHRASE_LIMIT: int = 5             # Max seconds for a single phrase (reduced for lower latency)
 
     # ── Text-to-Speech ───────────────────────────────────────────────────────
     SPEECH_RATE: int = 170            # Words per minute
-    SPEECH_VOLUME: float = 1.0        # 0.0 – 1.0
+    SPEECH_VOLUME: float = 0.6        # 0.0 – 1.0 (Affected for both say and pyttsx3)
 
     # ── Weather (OpenWeatherMap) ─────────────────────────────────────────────
     # Sign up free at https://openweathermap.org/api
