@@ -65,6 +65,20 @@ graph TD
 
 ---
 
+## 🆚 Macoo vs. Siri
+
+| Feature | Macoo (Our System) | Apple Siri |
+|---|---|---|
+| **Brain / Reasoning** | **Gemini 1.5 Flash** (Deep logic & coding) | Legacy NLP (Basic intents) |
+| **Transparency** | **Full Activity Stream** (Live logs) | Black Box (No visibility) |
+| **Customization** | **Open Ecosystem** (YAML Scenes) | Locked (Limited APIs) |
+| **Privacy** | **Local-First** (Offline system commands) | Cloud-Dependent |
+| **UI Experience** | **Glassmorphic Dashboard** (Web UI) | Floating Bubble (No Dashboard) |
+| **Interactivity** | **Snooze Engine** (Dedicated mute timer) | None |
+| **Local Speed** | **Zero-Latency Regex** for common tasks | Cloud round-trip required |
+
+---
+
 ## 🚀 The 20-Day Build Roadmap
 
 We are following a strict trajectory to move from MVP to "Daily Driver" status.
