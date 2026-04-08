@@ -76,8 +76,9 @@ Macoo/
 ### Day 5: App Orchestration (Workflows / Scenes)
 - [ ] **Aggressive Recognition:** Fully overhauled wake-word listener to eliminate blind spots and misinterpretations.
 - [ ] **Scene Parser:** Define a YAML configuration file for custom workflow bundles -> You can define 10 disparate actions as a single named scene.
-- [ ] **Coding Setup Event:** Build a "Ready to Code" macro -> VS Code, Chrome, Terminal, and DB open automatically with volume set nicely to 20%.
-- [ ] **Do Not Disturb Hook:** Integrate a DND Focus trigger element -> A "Meeting Mode" scene silences Slack natively and starts Zoom seamlessly.
+<!-- - [ ] **Coding Setup Event:** Build a "Ready to Code" macro -> VS Code, Chrome, Terminal, and DB open automatically with volume set nicely to 20%. -->
+- [ ] **Coding Setup Event:** Build a "Ready to Code" macoo -> VS Code, Chrome, Terminal open automatically with volume set nicely to 20%.
+- [ ] **Do Not Disturb Hook:** A "Meeting Mode" scene silences Slack natively and starts Zoom seamlessly.
 
 ---
 

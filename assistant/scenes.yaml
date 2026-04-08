@@ -1,0 +1,40 @@
+# Macoo Scenes Configuration — Define your multi-app workflows here.
+# Supported actions: open_app, set_volume, set_brightness, notification, say, mute, toggle_dark_mode
+
+scenes:
+  coding:
+    name: "Coding Setup"
+    trigger_words:
+      - "ready to code"
+      - "start coding"
+      - "coding session"
+    actions:
+      - action: "say"
+        value: "Initializing coding environment. Getting things ready."
+      - action: "set_volume"
+        value: 20
+      - action: "open_app"
+        value: "Visual Studio Code"
+      - action: "open_app"
+        value: "Google Chrome"
+      - action: "open_app"
+        value: "Terminal"
+      - action: "say"
+        value: "System primed. Happy building!"
+
+  meeting:
+    name: "Meeting Mode"
+    trigger_words:
+      - "meeting mode"
+      - "start focus"
+      - "silence for meeting"
+    actions:
+      - action: "say"
+        value: "Preparing for your meeting. Transitioning to focus mode."
+      - action: "mute_slack"
+      - action: "open_app"
+        value: "MeetUp"
+      - action: "set_volume"
+        value: 40
+      - action: "say"
+        value: "Slack silenced. MeetUp is ready for your Google Meet."

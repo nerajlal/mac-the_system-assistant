@@ -14,6 +14,7 @@ from assistant.skills import (
     media_skill,
     system_hooks,
 )
+from assistant import scene_engine
 
 
 # ─────────────────────────── Intent Patterns ──────────────────────────────── #
@@ -124,10 +125,13 @@ def process(text: str) -> str:
     """
     from assistant.llm_engine import parse_intent
     
-    skill = "unknown"
-    llm_data = None
-    
-    # 1. TRY OUR LOCAL BRAIN FIRST (Saves tokens, zero latency)
+    # 1. CHECK FOR CUSTOM SCENES (High Priority Workflows)
+    scene_id = scene_engine.engine.get_scene_by_trigger(text)
+    if scene_id:
+        scene_engine.engine.execute_scene(scene_id)
+        return "" # The engine handles the speaking/feedback
+
+    # 2. TRY OUR LOCAL BRAIN NEXT (Individual Skills)
     skill = detect_intent(text)
     
     # 2. IF LOCAL BRAIN FAILS, ASK GEMINI

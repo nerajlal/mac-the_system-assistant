@@ -98,3 +98,8 @@ def brightness_down() -> str:
 def set_brightness(text: str) -> str:
     """Set brightness (placeholder as macOS native applescript lacks direct API)."""
     return "Directly setting brightness percentage is currently limited. Use 'brightness up' or 'brightness down'."
+
+def mute_slack() -> str:
+    """Silence Slack natively by quitting the application."""
+    subprocess.run(["osascript", "-e", 'quit application "Slack"'])
+    return "Silenced Slack."
