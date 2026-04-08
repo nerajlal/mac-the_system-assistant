@@ -69,13 +69,14 @@ graph TD
 
 We are following a strict trajectory to move from MVP to "Daily Driver" status.
 
-### **Phase 1: The Foundation (Days 1–5) — ✅ COMPLETED**
+### **Phase 1: The Brain & Beautiful UI (Days 1–5) — 🟡 IN PROGRESS**
 - [x] Initial Rebranding & Core Framework.
 - [x] Gapless Wake-Word implementation.
 - [x] Premium Dashboard UI & Live Sync.
 - [x] Hybrid LLM + Search Fallback integration.
+- [ ] Scene Parser & Coding Macros.
 
-### **Phase 2: Deep macOS Integration (Days 6–10) — 🟡 IN PROGRESS**
+### **Phase 2: Deep macOS Integration (Days 6–10) — ⚪ NOT STARTED**
 - [ ] **Day 6:** SQLite Persistent Memory (Long-term Context).
 - [ ] **Day 7:** Proactive Task Management & Reminders.
 - [ ] **Day 8:** Media Master & Auto-Ducking (Spotify/Music control).
@@ -91,16 +92,18 @@ We are following a strict trajectory to move from MVP to "Daily Driver" status.
 1.  **Clone the Repository**:
     ```bash
     git clone https://github.com/nerajlal/mac-the_system-assistant.git
-    cd Alexa
+    cd Mac
     ```
 2.  **Environment Setup**:
     ```bash
+    # Ensure you have PortAudio and pyobjc dependencies installed (macOS)
+    # brew install portaudio
     python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     ```
 3.  **Configuration**:
-    Update `assistant/config.py` with your `GEMINI_API_KEY`.
+    Rename `.env.example` to `.env` and add your `GEMINI_API_KEY`.
 4.  **Launch**:
     ```bash
     python3 main.py
