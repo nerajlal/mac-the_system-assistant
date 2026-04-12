@@ -8,6 +8,7 @@ import logging
 from typing import Optional, Dict, Any
 import google.generativeai as genai
 from dotenv import load_dotenv
+from assistant import memory
 
 # Load environment variables from .env if present
 load_dotenv()
@@ -20,14 +21,14 @@ if GEMINI_API_KEY and GEMINI_API_KEY != "YOUR_API_KEY_HERE":
 else:
     logging.warning("GEMINI_API_KEY not found. LLM routing will fail over to regex.")
 
-# Use the fast, low-latency Flash model for voice
+# Use a high-capacity model for reliable routing and memory extraction
 try:
-    # Try the standard 1.5-flash first
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    # Use gemini-2.5-flash which has active quota and supports JSON structuring
+    model = genai.GenerativeModel('gemini-2.5-flash')
 except Exception:
     try:
-        # Fallback to standard Pro if flash is unavailable
-        model = genai.GenerativeModel('gemini-pro')
+        # Fallback 
+        model = genai.GenerativeModel('gemini-2.5-pro')
     except Exception as e:
         model = None
         logging.error(f"Failed to initialize any Gemini model: {e}")
@@ -62,18 +63,25 @@ Available skills (intents):
 - 'search': Asking a general knowledge question (who, what, how to).
 - 'chat': For greetings, small talk, or direct questions that don't trigger a system action.
 
+Memory & Context:
+- You have access to the user's past memories and conversation context. Use this to provide personalized answers.
+- If the user provides a new personal fact (e.g., "My name is John" or "I like blue"), you MUST extract it into the 'memory' field of your JSON output.
+
 Instructions:
 1. You MUST output ONLY valid JSON. 
 2. DO NOT wrap JSON in markdown blocks.
 3. Every single response MUST have a 'spoken_response'.
-4. For system actions (e.g. volume_up), the 'spoken_response' should be what you would say while performing the action (e.g. "Sure, turning it up for you").
-5. Keep 'spoken_response' concise, friendly, and without any special markdown characters.
+4. For system actions (e.g. volume_up), the 'spoken_response' should be what you would say while performing the action.
+5. Keep 'spoken_response' concise and friendly.
+6. If the user mentions a new fact about themselves, include a 'memory' object with 'key' and 'value'.
 
 Output JSON Schema:
 {
-  "intent": "<exact skill name from the list above, or 'unknown'>",
-  "spoken_response": "<A short, natural, conversational spoken response.>"
+  "intent": "<exact skill name>",
+  "spoken_response": "<A short, natural, conversational spoken response.>",
+  "memory": { "key": "fact_key", "value": "fact_value" } 
 }
+(The 'memory' field is optional, only include if a new fact is learned).
 """
 
 def parse_intent(text: str) -> Optional[Dict[str, Any]]:
@@ -85,14 +93,28 @@ def parse_intent(text: str) -> Optional[Dict[str, Any]]:
         return None
 
     try:
-        prompt = f"{SYSTEM_PROMPT}\n\nUser request: '{text}'"
+        # Fetch Context from Memory
+        history = memory.get_recent_history(limit=6)
+        facts = memory.get_all_memories()
         
-        # We specify response_mime_type to guarantee a JSON return from Gemini (Supported in new SDKs)
+        context_str = ""
+        if facts:
+            context_str += "\nFacts I know about you:\n" + "\n".join([f"- {k}: {v}" for k, v in facts.items()])
+        
+        if history:
+            context_str += "\nRecent Conversation History:\n"
+            for turn in history:
+                role_label = "User" if turn["role"] == "user" else "Assistant"
+                context_str += f"{role_label}: {turn['content']}\n"
+
+        prompt = f"{SYSTEM_PROMPT}\n{context_str}\n\nUser request: '{text}'"
+        
+        # We specify response_mime_type to guarantee a JSON return
         response = model.generate_content(
             prompt,
             generation_config=genai.GenerationConfig(
                 response_mime_type="application/json",
-                temperature=0.0  # We want deterministic routing, not creativity
+                temperature=0.0
             )
         )
         

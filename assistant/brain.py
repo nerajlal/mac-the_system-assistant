@@ -14,7 +14,7 @@ from assistant.skills import (
     media_skill,
     system_hooks,
 )
-from assistant import scene_engine
+from assistant import scene_engine, memory
 
 
 # ─────────────────────────── Intent Patterns ──────────────────────────────── #
@@ -138,12 +138,23 @@ def process(text: str) -> str:
     if skill == "unknown":
         print(f"🕵️  Local brain confused. Consulting Gemini...")
         llm_data = parse_intent(text)
+        
+        # Extract and save memory immediately if provided, regardless of intent
+        if llm_data and "memory" in llm_data and llm_data["memory"]:
+            mem = llm_data["memory"]
+            if "key" in mem and "value" in mem:
+                memory.save_memory(mem["key"], mem["value"])
+
         if llm_data and llm_data.get("intent") and llm_data.get("intent") != "unknown":
             skill = llm_data["intent"]
             print(f"🧠 Gemini Intent Detected: {skill}")
             
             if skill == "chat":
-                return llm_data.get("spoken_response", "I'm not sure how to respond to that.")
+                final_response = llm_data.get("spoken_response", "I'm not sure how to respond to that.")
+                # We still want to log the interaction in chat mode
+                memory.log_interaction("user", text)
+                memory.log_interaction("assistant", final_response)
+                return final_response
         else:
             print(f"🔍 Both local brain and Gemini failed. Attempting Search Fallback...")
             # Fail-safe: If it looks like a question, use the search skill instead of giving up
@@ -160,120 +171,129 @@ def process(text: str) -> str:
     else:
         print(f"🔍 Local Brain Detected: {skill}")
 
+    # ── Finalize Response ─────────────────────────────────────────────────── #
+    final_response = ""
     # Execute Skill Actions but prefer Gemini's spoken response if available
     llm_response = llm_data.get("spoken_response") if llm_data else None
     
     # ── Time & Date ───────────────────────────────────────────────────────── #
     if skill == "time":
         res = time_skill.get_time()
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "date":
         res = time_skill.get_date()
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── Fun ───────────────────────────────────────────────────────────────── #
     elif skill == "joke":
         res = joke_skill.tell_joke()
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── Media & Entertainment ─────────────────────────────────────────────── #
     elif skill == "trailer":
         res = media_skill.play_trailer(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "youtube":
         res = media_skill.play_youtube(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "spotify":
         res = media_skill.play_spotify(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "netflix":
         res = media_skill.open_netflix(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "music":
         res = music_skill.play(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── Navigation ────────────────────────────────────────────────────────── #
     elif skill == "maps":
         res = media_skill.open_maps(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── Apps ──────────────────────────────────────────────────────────────── #
     elif skill == "open_app":
         res = media_skill.open_app(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── Weather ───────────────────────────────────────────────────────────── #
     elif skill == "weather":
         res = weather_skill.get_weather(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── System ────────────────────────────────────────────────────────────── #
     elif skill == "volume_up":
         system_hooks.volume_up()
-        return llm_response if llm_response else "Volume increased."
+        final_response = llm_response if llm_response else "Volume increased."
 
     elif skill == "volume_down":
         system_hooks.volume_down()
-        return llm_response if llm_response else "Volume decreased."
+        final_response = llm_response if llm_response else "Volume decreased."
 
     elif skill == "mute":
         system_hooks.mute_volume()
-        return llm_response if llm_response else "Muted."
+        final_response = llm_response if llm_response else "Muted."
 
     elif skill == "set_volume":
         system_hooks.set_volume(text)
-        return llm_response if llm_response else "Volume adjusted."
+        final_response = llm_response if llm_response else "Volume adjusted."
 
     elif skill == "brightness_up":
         system_hooks.brightness_up()
-        return llm_response if llm_response else "Increased brightness."
+        final_response = llm_response if llm_response else "Increased brightness."
 
     elif skill == "brightness_down":
         system_hooks.brightness_down()
-        return llm_response if llm_response else "Decreased brightness."
+        final_response = llm_response if llm_response else "Decreased brightness."
 
     elif skill == "set_brightness":
         system_hooks.set_brightness(text)
-        return llm_response if llm_response else "Brightness adjusted."
+        final_response = llm_response if llm_response else "Brightness adjusted."
 
     elif skill == "dark_mode":
         system_hooks.toggle_dark_mode()
-        return llm_response if llm_response else "Toggled dark mode."
+        final_response = llm_response if llm_response else "Toggled dark mode."
 
     elif skill == "battery":
         res = system_hooks.get_battery()
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "settings":
         res = system_hooks.open_settings_pane(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "shutdown":
         system_skill.shutdown()
-        return llm_response if llm_response else "Shutting down."
+        final_response = llm_response if llm_response else "Shutting down."
 
     elif skill == "goodbye":
-        return "__EXIT__"
+        final_response = "__EXIT__"
 
     # ── Search ────────────────────────────────────────────────────────────── #
     elif skill == "google":
         res = media_skill.google_search(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     elif skill == "search":
         res = search_skill.search(text)
-        return llm_response if llm_response else res
+        final_response = llm_response if llm_response else res
 
     # ── Fallback ──────────────────────────────────────────────────────────── #
     else:
-        return (
+        final_response = (
             "I'm not sure I understood that. "
             "Try saying things like 'play trailer of Avengers', "
             "'play music on Spotify', 'open WhatsApp', or 'what's the weather'."
         )
+
+    # ── LOG CONVERSATION TO MEMORY ────────────────────────────────────────── #
+    if final_response and final_response != "__EXIT__":
+        memory.log_interaction("user", text)
+        memory.log_interaction("assistant", final_response)
+    
+    return final_response

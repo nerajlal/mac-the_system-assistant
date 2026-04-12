@@ -178,11 +178,75 @@ document.addEventListener('DOMContentLoaded', () => {
                 apiText.textContent = 'API Offline (Regex)';
             }
             
+            // Sync Memories
+            fetchMemories();
+            
         } catch (error) {
             console.error("Polling error:", error);
         } finally {
             isPolling = false;
             setTimeout(pollStatus, 2000);
+        }
+    }
+
+    // ── Memory Vault Logic ─────────────────────────────────────────────── #
+    async function fetchMemories() {
+        try {
+            const response = await fetch('/api/memories');
+            const memories = await response.json();
+            renderMemories(memories);
+        } catch (error) {
+            console.error("Failed to fetch memories:", error);
+        }
+    }
+
+    function renderMemories(memories) {
+        const memoryList = document.getElementById('memory-list');
+        const keys = Object.keys(memories);
+        
+        if (keys.length === 0) {
+            memoryList.innerHTML = `
+                <div class="empty-memory">
+                    No memories saved yet. Ask Macoo something like "My favorite color is blue".
+                </div>`;
+            return;
+        }
+
+        memoryList.innerHTML = '';
+        keys.forEach(key => {
+            const item = document.createElement('div');
+            item.className = 'memory-item';
+            item.innerHTML = `
+                <div class="memory-content">
+                    <span class="memory-key">${key.replace(/_/g, ' ')}</span>
+                    <span class="memory-val">${memories[key]}</span>
+                </div>
+                <button class="delete-memory-btn" data-key="${key}" title="Forget this memory">
+                    <span class="delete-icon">✕</span>
+                </button>
+            `;
+            memoryList.appendChild(item);
+        });
+
+        // Attach delete listeners
+        document.querySelectorAll('.delete-memory-btn').forEach(btn => {
+            btn.onclick = async (e) => {
+                e.stopPropagation();
+                const key = btn.getAttribute('data-key');
+                await deleteMemory(key);
+            };
+        });
+    }
+
+    async function deleteMemory(key) {
+        try {
+            const response = await fetch(`/api/memories/${key}`, { method: 'DELETE' });
+            if (response.ok) {
+                await fetchMemories();
+                addLog(`Memory deleted: ${key}`, "system");
+            }
+        } catch (error) {
+            console.error("Delete failed:", error);
         }
     }
 

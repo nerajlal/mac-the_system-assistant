@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import logging
+from assistant import memory
 
 # We will use this module-level variable to communicate between the web server and the main assistant loop.
 # True = Assistant is listening. False = Assistant ignores microphone.
@@ -36,12 +37,19 @@ def toggle_status():
         assistant_state["last_spoken"] = ""
     return jsonify(assistant_state)
 
-@app.route("/api/snooze", methods=["POST"])
-def snooze_assistant():
-    # Deactivate assistant
-    assistant_state["is_active"] = False
-    assistant_state["last_heard"] = "SNOOZE_ENGAGED"
     return jsonify({"status": "snoozed", "duration_minutes": 5})
+
+@app.route("/api/memories", methods=["GET"])
+def get_memories():
+    """Returns all stored facts about the user."""
+    memories = memory.get_all_memories()
+    return jsonify(memories)
+
+@app.route("/api/memories/<key>", methods=["DELETE"])
+def remove_memory(key):
+    """Deletes a specific memory."""
+    memory.delete_memory(key)
+    return jsonify({"status": "success", "deleted": key})
 
 def run_server():
     # Run the web server quietly on port 5050
