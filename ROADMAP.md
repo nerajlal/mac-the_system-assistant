@@ -87,9 +87,9 @@ Macoo/
 
 ### Day 6: Contextual Memory — SQLite Local Database 
 **Goal:** Make Macoo remember you. A truly smart assistant recalls past context.
-- [ ] **Database Setup:** Connect an SQLite database at `assistant/memory.db` -> The system safely persists user data locally over reboots.
-- [ ] **Core Schema:** Build tables for basic configurations and conversation logging -> Macoo securely tracks state and prior interactions.
-- [ ] **Dashboard Memory Sync:** Create a "Memories" card on the frontend HTML -> Users visually see exactly what Macoo has learned about them.
+- [x] **Database Setup:** Connect an SQLite database at `assistant/memory.db` -> The system safely persists user data locally over reboots.
+- [x] **Core Schema:** Build tables for basic configurations and conversation logging -> Macoo securely tracks state and prior interactions.
+- [x] **Dashboard Memory Sync:** Create a "Memories" card on the frontend HTML -> Users visually see exactly what Macoo has learned about them.
 
 ### Day 7: Proactive Task Management — Reminders & Notes
 **Goal:** Transition from instant commands to time-aware persistence. Build the reminder skill on top of the DB.
