@@ -102,12 +102,12 @@ Macoo/
 - *"What did I plan for tomorrow?"* → Macoo filters and summarizes tomorrow's tasks.
 
 **Tasks:**
-- [ ] **Natural Date Parsing:** Inject current date/time into Gemini's system prompt → Macoo converts casual phrases like "tomorrow at 1pm" or "in 15 minutes" into precise ISO timestamps automatically.
-- [ ] **Reminders Schema:** Add a `tasks` table to SQLite with columns: `id`, `content`, `due_datetime`, `type` (reminder/note), `is_done` → Tasks survive system restarts.
-- [ ] **Save Skill:** Handle `set_reminder` and `take_note` intents in `brain.py` → Macoo acknowledges: *"Got it! I'll remind you to drink water at 11:04 AM."*
-- [ ] **Background Alarm Loop:** Run a silent thread every 60 seconds that checks for due tasks → Macoo proactively speaks the reminder aloud when the time arrives, even without being asked.
-- [ ] **Schedule Query Engine:** Handle `query_schedule` intent → Macoo filters tasks by "today", "tomorrow", or specific dates and reads back a natural summary of your planned day.
-- [ ] **Dashboard Tasks Card:** Add a "Scheduled Tasks" glassmorphic card to `localhost:5050` → Live countdown view of upcoming reminders with a checkmark to mark them done.
+- [x] **Natural Date Parsing:** Inject current date/time into Gemini's system prompt → Macoo converts casual phrases like "tomorrow at 1pm" or "in 15 minutes" into precise ISO timestamps automatically.
+- [x] **Reminders Schema:** Add a `tasks` table to SQLite with columns: `id`, `content`, `due_datetime`, `type` (reminder/note), `is_done` → Tasks survive system restarts.
+- [x] **Save Skill:** Handle `set_reminder` and `take_note` intents in `brain.py` → Macoo acknowledges: *"Got it! I'll remind you to drink water at 11:04 AM."*
+- [x] **Background Alarm Loop:** Run a silent thread every 60 seconds that checks for due tasks → Macoo proactively speaks the reminder aloud when the time arrives, even without being asked.
+- [x] **Schedule Query Engine:** Handle `query_schedule` intent → Macoo filters tasks by "today", "tomorrow", or specific dates and reads back a natural summary of your planned day.
+- [x] **Dashboard Tasks Card:** Add a "Scheduled Tasks" glassmorphic card to `localhost:5050` → Live countdown view of upcoming reminders with a checkmark to mark them done.
 
 ### Day 8: Media Master & Auto-Ducking
 **Goal:** Handle media beautifully so Macoo never yells over your Spotify playback.
