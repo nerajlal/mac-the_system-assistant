@@ -178,8 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 apiText.textContent = 'API Offline (Regex)';
             }
             
-            // Sync Memories
+            // Sync Memories & Tasks
             fetchMemories();
+            fetchTasks();
             
         } catch (error) {
             console.error("Polling error:", error);
@@ -247,6 +248,93 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Delete failed:", error);
+        }
+    }
+
+    // ── Scheduled Tasks Logic ────────────────────────────────────────── #
+    async function fetchTasks() {
+        try {
+            const response = await fetch('/api/tasks');
+            const tasks = await response.json();
+            renderTasks(tasks);
+        } catch (error) {
+            console.error("Failed to fetch tasks:", error);
+        }
+    }
+
+    function renderTasks(tasks) {
+        const taskList = document.getElementById('task-list');
+        
+        if (tasks.length === 0) {
+            taskList.innerHTML = `
+                <div class="empty-tasks">
+                    No active tasks. Try "Remind me to drink water in 15 minutes".
+                </div>`;
+            return;
+        }
+
+        taskList.innerHTML = '';
+        const now = new Date();
+
+        tasks.forEach(task => {
+            const item = document.createElement('div');
+            item.className = `task-item ${task.type}`;
+            
+            let timeStr = "";
+            let countdownStr = "";
+            
+            if (task.due_datetime) {
+                const due = new Date(task.due_datetime);
+                timeStr = due.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const diffMs = due - now;
+                const diffMins = Math.round(diffMs / 60000);
+                
+                if (diffMins > 0) {
+                    if (diffMins < 60) {
+                        countdownStr = `in ${diffMins}m`;
+                    } else if (diffMins < 1440) {
+                        countdownStr = `in ${Math.floor(diffMins/60)}h`;
+                    } else {
+                        countdownStr = `in ${Math.floor(diffMins/1440)}d`;
+                    }
+                } else {
+                    countdownStr = "due now";
+                }
+            }
+
+            item.innerHTML = `
+                <div class="task-meta">
+                    <span class="task-type">${task.type}</span>
+                    <span class="task-content">${task.content}</span>
+                    <span class="task-due">${timeStr} ${countdownStr ? '• ' + countdownStr : ''}</span>
+                </div>
+                <button class="done-btn" data-id="${task.id}" title="Mark as done">
+                    <span class="check-icon">✓</span>
+                </button>
+            `;
+            taskList.appendChild(item);
+        });
+
+        // Attach completion listeners
+        document.querySelectorAll('.done-btn').forEach(btn => {
+            btn.onclick = async (e) => {
+                e.stopPropagation();
+                const id = btn.getAttribute('data-id');
+                await markTaskDone(id);
+            };
+        });
+    }
+
+    async function markTaskDone(id) {
+        try {
+            const response = await fetch(`/api/tasks/done/${id}`, { method: 'POST' });
+            if (response.ok) {
+                await fetchTasks();
+                addLog("Task completed and archived.", "system");
+            }
+        } catch (error) {
+            console.error("Completion failed:", error);
         }
     }
 

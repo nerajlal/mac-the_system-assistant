@@ -5,6 +5,7 @@ LLM Engine — Handles communication with Google Gemini to parse intents via Fun
 import os
 import json
 import logging
+from datetime import datetime
 from typing import Optional, Dict, Any
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -60,6 +61,9 @@ Available skills (intents):
 - 'battery': Asking about battery or power.
 - 'settings': Opening specific system settings (wifi, displays, etc).
 - 'shutdown': Shutting down the computer.
+- 'set_reminder': Setting a reminder for a specific time or relative interval (e.g. "in 5 minutes", "tomorrow at 3pm").
+- 'take_note': Capturing a quick thought or a record of an event (e.g. "note I have a meeting tomorrow").
+- 'query_schedule': Asking about what tasks or reminders are planned for today, tomorrow, or a specific date.
 - 'search': Asking a general knowledge question (who, what, how to).
 - 'chat': For greetings, small talk, or direct questions that don't trigger a system action.
 
@@ -79,9 +83,15 @@ Output JSON Schema:
 {
   "intent": "<exact skill name>",
   "spoken_response": "<A short, natural, conversational spoken response.>",
-  "memory": { "key": "fact_key", "value": "fact_value" } 
+  "memory": { "key": "fact_key", "value": "fact_value" },
+  "task_data": { 
+    "content": "the task description", 
+    "due_datetime": "YYYY-MM-DDTHH:MM:SS" 
+  }
 }
-(The 'memory' field is optional, only include if a new fact is learned).
+(The 'memory' and 'task_data' fields are optional).
+For 'set_reminder', you MUST provide 'due_datetime'. For 'take_note', 'due_datetime' is optional.
+For 'query_schedule', use 'task_data' to specify the date being queried (e.g. tomorrow) in 'due_datetime'.
 """
 
 def parse_intent(text: str) -> Optional[Dict[str, Any]]:
@@ -106,6 +116,10 @@ def parse_intent(text: str) -> Optional[Dict[str, Any]]:
             for turn in history:
                 role_label = "User" if turn["role"] == "user" else "Assistant"
                 context_str += f"{role_label}: {turn['content']}\n"
+
+        # Inject Current Time for relative calculations
+        current_time = datetime.now().strftime("%A, %B %d, %Y, %I:%M %p")
+        context_str += f"\n[CRITICAL] Current System Time: {current_time}\n"
 
         prompt = f"{SYSTEM_PROMPT}\n{context_str}\n\nUser request: '{text}'"
         

@@ -36,6 +36,18 @@ def init_db():
             )
         ''')
         
+        # Table 3: Tasks (Reminders and Notes)
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                content TEXT,
+                due_datetime DATETIME,
+                type TEXT,
+                is_done BOOLEAN DEFAULT 0,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
         conn.commit()
         conn.close()
         logging.info(f"Database initialized at {DB_PATH}")
@@ -114,6 +126,65 @@ def delete_memory(key: str):
             conn.close()
         except Exception as e:
             logging.error(f"Failed to delete memory: {e}")
+
+def save_task(content: str, due_datetime: str, task_type: str = "reminder"):
+    """Saves a task or note."""
+    with _db_lock:
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO tasks (content, due_datetime, type) VALUES (?, ?, ?)",
+                (content, due_datetime, task_type)
+            )
+            conn.commit()
+            conn.close()
+            logging.info(f"Task saved: {content} due at {due_datetime}")
+        except Exception as e:
+            logging.error(f"Failed to save task: {e}")
+
+def get_pending_reminders(current_time: str):
+    """Retrieves reminders that are due and not yet spoken/marked done."""
+    with _db_lock:
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT id, content FROM tasks WHERE type = 'reminder' AND is_done = 0 AND due_datetime <= ?",
+                (current_time,)
+            )
+            rows = cursor.fetchall()
+            conn.close()
+            return [{"id": r[0], "content": r[1]} for r in rows]
+        except Exception as e:
+            logging.error(f"Failed to fetch pending reminders: {e}")
+            return []
+
+def mark_task_done(task_id: int):
+    """Deletes a task upon completion (acting as auto-delete)."""
+    with _db_lock:
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            logging.error(f"Failed to mark task done: {e}")
+
+def get_all_active_tasks():
+    """Gets all pending tasks and notes for querying or dashboard display."""
+    with _db_lock:
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, content, due_datetime, type FROM tasks WHERE is_done = 0 ORDER BY due_datetime ASC")
+            rows = cursor.fetchall()
+            conn.close()
+            return [{"id": r[0], "content": r[1], "due_datetime": r[2], "type": r[3]} for r in rows]
+        except Exception as e:
+            logging.error(f"Failed to fetch all active tasks: {e}")
+            return []
 
 # Initialize when imported
 init_db()

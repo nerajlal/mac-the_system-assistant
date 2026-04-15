@@ -51,6 +51,18 @@ def remove_memory(key):
     memory.delete_memory(key)
     return jsonify({"status": "success", "deleted": key})
 
+@app.route("/api/tasks", methods=["GET"])
+def get_tasks():
+    """Returns all active tasks and reminders."""
+    tasks = memory.get_all_active_tasks()
+    return jsonify(tasks)
+
+@app.route("/api/tasks/done/<int:task_id>", methods=["POST"])
+def complete_task(task_id):
+    """Marks a task as done (deletes it)."""
+    memory.mark_task_done(task_id)
+    return jsonify({"status": "success", "completed": task_id})
+
 def run_server():
     # Run the web server quietly on port 5050
     app.run(host="0.0.0.0", port=5050, debug=False, use_reloader=False)

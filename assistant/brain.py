@@ -13,6 +13,7 @@ from assistant.skills import (
     music_skill,
     media_skill,
     system_hooks,
+    tasks_skill,
 )
 from assistant import scene_engine, memory
 
@@ -155,6 +156,10 @@ def process(text: str) -> str:
                 memory.log_interaction("user", text)
                 memory.log_interaction("assistant", final_response)
                 return final_response
+
+            if skill in ["set_reminder", "take_note", "query_schedule"]:
+                task_data = llm_data.get("task_data", {})
+                return tasks_skill.handle_tasks(skill, task_data)
         else:
             print(f"🔍 Both local brain and Gemini failed. Attempting Search Fallback...")
             # Fail-safe: If it looks like a question, use the search skill instead of giving up

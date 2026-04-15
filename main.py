@@ -16,11 +16,13 @@ Run with:
 
 import sys
 import time
+from datetime import datetime
 import argparse
 from assistant.config import Config
 from assistant.speaker import speak
 from assistant.listener import listen
 from assistant.brain import process
+from assistant import memory
 
 
 # ─────────────────────────── Argument Parsing ─────────────────────────────── #
@@ -34,6 +36,28 @@ def parse_args():
 
 import threading
 import app as web_app
+
+# ─────────────────────────── Alarm Thread ────────────────────────────────── #
+
+def alarm_loop():
+    """Background thread that checks for due reminders every 30 seconds."""
+    print("⏰  Alarm thread active.")
+    while True:
+        try:
+            now = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            due_tasks = memory.get_pending_reminders(now)
+            
+            for task in due_tasks:
+                msg = f"Excuse me — you asked me to remind you to {task['content']}."
+                print(f"🔔  ALARM: {msg}")
+                speak(msg)
+                # Auto-delete/mark done after firing
+                memory.mark_task_done(task['id'])
+                
+        except Exception as e:
+            print(f"⚠️  Alarm loop error: {e}")
+            
+        time.sleep(30) # Check every 30 seconds for precision
 
 # ──────────────────────────── Main Loop ───────────────────────────────────── #
 
@@ -121,6 +145,10 @@ if __name__ == "__main__":
         server_thread = threading.Thread(target=web_app.run_server, daemon=True)
         server_thread.start()
         print("\n🌐 Web Dashboard running at http://localhost:5050\n")
+
+        # Start alarm thread
+        alarm_thread = threading.Thread(target=alarm_loop, daemon=True)
+        alarm_thread.start()
 
         if args.text:
             run_text_mode()

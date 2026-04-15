@@ -91,14 +91,23 @@ Macoo/
 - [x] **Core Schema:** Build tables for basic configurations and conversation logging -> Macoo securely tracks state and prior interactions.
 - [x] **Dashboard Memory Sync:** Create a "Memories" card on the frontend HTML -> Users visually see exactly what Macoo has learned about them.
 
-### Day 7: Proactive Task Management — Reminders & Notes
-**Goal:** Transition from instant commands to time-aware persistence. Build the reminder skill on top of the DB.
-- [ ] **Natural Date Parsing:** Use Gemini to extract intent and timeframe from phrases like "tomorrow at 3pm" -> Macoo identifies precise timestamps from casual speech.
-- [ ] **Reminders Schema:** Add a dedicated `reminders` table to our SQLite memory -> Your tasks and reminders are saved securely and survive system restarts.
-- [ ] **Task Query Engine:** Build the logic for "What are my tasks for [timeframe]?" -> Macoo filters and summarizes your schedule for the day, week, or month correctly.
-- [ ] **Immediate Task Note:** Capture quick brain-dumps via "Task note: [content]" -> Macoo acknowledges and stores your thoughts instantly.
+### Day 7: Proactive Task Management — Reminders & Scheduling
+**Goal:** Transition from instant commands to time-aware persistence. Macoo actively reminds you of tasks at the right time AND answers schedule queries.
 
-make working setup dynamic 
+**Core Use Cases:**
+- *"Remind me after 15 minutes to drink water"* → Macoo speaks the reminder at the exact time.
+- *"Note I have a meeting tomorrow at 1pm"* → Saved and queryable.
+- *"Tomorrow morning 10am I want to send a mail"* → Saved with precise timestamp.
+- *"Hey Mac, what's my schedule today?"* → Macoo reads back all tasks for today.
+- *"What did I plan for tomorrow?"* → Macoo filters and summarizes tomorrow's tasks.
+
+**Tasks:**
+- [ ] **Natural Date Parsing:** Inject current date/time into Gemini's system prompt → Macoo converts casual phrases like "tomorrow at 1pm" or "in 15 minutes" into precise ISO timestamps automatically.
+- [ ] **Reminders Schema:** Add a `tasks` table to SQLite with columns: `id`, `content`, `due_datetime`, `type` (reminder/note), `is_done` → Tasks survive system restarts.
+- [ ] **Save Skill:** Handle `set_reminder` and `take_note` intents in `brain.py` → Macoo acknowledges: *"Got it! I'll remind you to drink water at 11:04 AM."*
+- [ ] **Background Alarm Loop:** Run a silent thread every 60 seconds that checks for due tasks → Macoo proactively speaks the reminder aloud when the time arrives, even without being asked.
+- [ ] **Schedule Query Engine:** Handle `query_schedule` intent → Macoo filters tasks by "today", "tomorrow", or specific dates and reads back a natural summary of your planned day.
+- [ ] **Dashboard Tasks Card:** Add a "Scheduled Tasks" glassmorphic card to `localhost:5050` → Live countdown view of upcoming reminders with a checkmark to mark them done.
 
 ### Day 8: Media Master & Auto-Ducking
 **Goal:** Handle media beautifully so Macoo never yells over your Spotify playback.
