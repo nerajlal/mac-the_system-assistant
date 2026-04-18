@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isPolling = false;
     let lastHeardProcessed = "";
     let lastSpokenProcessed = "";
+    let lastMemoriesSync = "";
+    let lastTasksSync = "";
 
     // Helper: Add a log entry
     function addLog(message, type = 'system') {
@@ -213,6 +215,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const memoryList = document.getElementById('memory-list');
         const keys = Object.keys(memories);
         
+        // Optimize: Only render if data has changed
+        const currentState = JSON.stringify(memories);
+        if (currentState === lastMemoriesSync) return;
+        lastMemoriesSync = currentState;
+
         if (keys.length === 0) {
             memoryList.innerHTML = `
                 <div class="empty-memory">
@@ -273,6 +280,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTasks(tasks) {
         const taskList = document.getElementById('task-list');
         
+        // Optimize: Only render if data has changed
+        const currentState = JSON.stringify(tasks);
+        if (currentState === lastTasksSync) return;
+        lastTasksSync = currentState;
+
         if (tasks.length === 0) {
             taskList.innerHTML = `
                 <div class="empty-tasks">

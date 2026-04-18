@@ -596,6 +596,7 @@ input:checked + .slider .slider-thumb {
     flex-grow: 1;
     overflow: hidden;
     min-height: 150px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .memory-list {
@@ -700,6 +701,7 @@ input:checked + .slider .slider-thumb {
     flex-grow: 1;
     overflow: hidden;
     min-height: 150px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tasks-list {
