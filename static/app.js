@@ -95,6 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 snoozeTimer = null;
                 snoozeBtn.classList.remove('active');
                 snoozeText.textContent = "Snooze";
+                
+                // Automatically re-enable system
+                fetch('/api/toggle', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ is_active: true })
+                }).then(res => res.json()).then(data => updateUI(data));
+
                 addLog("Snooze expired. System returning to stand-by.", "system");
             } else {
                 updateSnoozeUI(remaining);

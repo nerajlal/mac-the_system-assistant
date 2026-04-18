@@ -32,15 +32,34 @@
                 <h1>Mac<span class="accent">AI</span></h1>
             </div>
             
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <div class="status-pill status-waiting" id="status-badge">
-                    <span class="pulse-dot"></span>
-                    <span class="status-text" id="status-text">Waiting</span>
+            <div class="header-actions">
+                <div class="power-control">
+                    <label class="premium-switch">
+                        <input type="checkbox" id="power-toggle" checked>
+                        <span class="slider">
+                            <span class="slider-thumb"></span>
+                        </span>
+                    </label>
+                    <span id="power-label" class="power-text active">System Active</span>
                 </div>
-                
-                <div class="status-pill status-offline" id="api-status-badge" style="background: rgba(255, 60, 60, 0.1); border-color: rgba(255, 60, 60, 0.3);">
-                    <span class="pulse-dot" style="background: rgb(255, 60, 60);" id="api-pulse-dot"></span>
-                    <span class="status-text" id="api-status-text" style="color: rgb(255, 100, 100);">API Offline (Regex)</span>
+
+                <div class="divider"></div>
+
+                <button class="snooze-btn" id="snooze-btn" title="Snooze for 5 minutes">
+                    <span class="snooze-icon">⏳</span>
+                    <span id="snooze-text">Snooze</span>
+                </button>
+
+                <div class="status-group">
+                    <div class="status-pill status-waiting" id="status-badge">
+                        <span class="pulse-dot"></span>
+                        <span class="status-text" id="status-text">Waiting</span>
+                    </div>
+                    
+                    <div class="status-pill status-offline" id="api-status-badge">
+                        <span class="pulse-dot" id="api-pulse-dot"></span>
+                        <span class="status-text" id="api-status-text">API Offline (Regex)</span>
+                    </div>
                 </div>
             </div>
         </header>
@@ -48,32 +67,6 @@
         <!-- Main Dashboard -->
         <main class="dashboard-grid">
             
-            <!-- Power Control Card -->
-            <section class="glass-card settings-card group-hover-effect">
-                <div class="card-glow"></div>
-                <div class="card-header">
-                    <h2>System Power</h2>
-                    <p>Toggle Mac's listening and processing capabilities.</p>
-                </div>
-                
-                <div class="toggle-wrapper">
-                    <label class="premium-switch">
-                        <input type="checkbox" id="power-toggle" checked>
-                        <span class="slider">
-                            <span class="slider-thumb"></span>
-                        </span>
-                    </label>
-                    <div class="state-label">
-                        <span id="power-label" class="power-text active">System Active</span>
-                    </div>
-                    
-                    <button class="snooze-btn" id="snooze-btn" title="Snooze for 5 minutes">
-                        <span class="snooze-icon">⏳</span>
-                        <span id="snooze-text">Snooze</span>
-                    </button>
-                </div>
-            </section>
-
             <!-- Memory Vault Card -->
             <section class="glass-card memory-card group-hover-effect">
                 <div class="card-glow"></div>

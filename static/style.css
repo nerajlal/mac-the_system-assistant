@@ -132,16 +132,16 @@ body.system-offline {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    padding: 8px 16px;
-    border-radius: 12px;
+    padding: 6px 14px;
+    border-radius: 10px;
     font-family: 'Outfit', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     transition: all 0.3s ease;
-    margin-left: auto;
 }
 
 .snooze-btn:hover {
@@ -183,13 +183,37 @@ body.system-offline {
     backdrop-filter: blur(24px) saturate(150%);
     -webkit-backdrop-filter: blur(24px) saturate(150%);
     border-radius: 20px;
-    padding: 1.25rem 2rem;
+    padding: 0.75rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 
         0 4px 24px -1px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 var(--glass-highlight);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.power-control {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.status-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background: var(--glass-border);
 }
 
 .brand {
@@ -325,7 +349,7 @@ body.system-offline {
 
 @media (min-width: 1024px) {
     .dashboard-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -388,8 +412,8 @@ body.system-offline {
 .premium-switch {
     position: relative;
     display: inline-block;
-    width: 68px;
-    height: 36px;
+    width: 48px;
+    height: 26px;
     flex-shrink: 0;
 }
 
@@ -408,8 +432,8 @@ body.system-offline {
 
 .slider-thumb {
     position: absolute;
-    height: 28px;
-    width: 28px;
+    height: 18px;
+    width: 18px;
     left: 3px;
     bottom: 3px;
     background-color: var(--text-muted);
@@ -424,15 +448,17 @@ input:checked + .slider {
 }
 
 input:checked + .slider .slider-thumb {
-    transform: translateX(32px);
+    transform: translateX(23px);
     background-color: #fff;
     box-shadow: 0 0 15px var(--accent-glow);
 }
 
 .power-text {
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: color 0.3s;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
 }
 
 .power-text.active {

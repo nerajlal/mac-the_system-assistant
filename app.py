@@ -35,8 +35,12 @@ def toggle_status():
         # Clear logs on manual toggle to keep it fresh
         assistant_state["last_heard"] = ""
         assistant_state["last_spoken"] = ""
-    return jsonify(assistant_state)
-
+@app.route("/api/snooze", methods=["POST"])
+def snooze_system():
+    """Temporarily disables the assistant for 5 minutes."""
+    assistant_state["is_active"] = False
+    assistant_state["last_heard"] = "SNOOZE_ENGAGED"
+    assistant_state["last_spoken"] = "SNOOZE_ENGAGED"
     return jsonify({"status": "snoozed", "duration_minutes": 5})
 
 @app.route("/api/memories", methods=["GET"])
@@ -64,8 +68,9 @@ def complete_task(task_id):
     return jsonify({"status": "success", "completed": task_id})
 
 def run_server():
-    # Run the web server quietly on port 5050
-    app.run(host="0.0.0.0", port=5050, debug=False, use_reloader=False)
+    # Run the web server quietly on port 5050 with reloader enabled
+    app.run(host="0.0.0.0", port=5050, debug=True, use_reloader=False)
 
 if __name__ == "__main__":
     run_server()
+
